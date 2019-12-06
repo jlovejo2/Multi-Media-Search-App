@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 <body>
     <div class="heading">
@@ -23,11 +25,35 @@
                 </div>
             </div>
         </form>
-          <div class="peramitor">
-            <input type="checkbox" name="peram" value="book"> Book
-            <input type="checkbox" name="peram" value="movie"> Movie 
-            <input type="checkbox" name="peram" value="game"> Game 
-          </div>
+        <div class="container">
+        <form class="boxes">
+                <div class="row">
+            <div class="col s4">
+                <div class="right-align">
+                <input class="check" type="checkbox" id="book-op" />
+                <label for="book-op">Book</label>
+                </div>
+            </div>
+
+                <div class="col s4">
+                <div class="center-align">
+                <input class="check" type="checkbox" id="movie-op" />
+                <label for="movie-op">Movie</label>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="left-align">
+                <input class="check" type="checkbox" id="game-op"/>
+                <label for="game-op">Game</label>
+                </div>
+                </div>
+                </div>
+            </div>
+        </form>
+        </div>
+
+
+      
     </div>
     <div class="results">
         <p>RESULTS GO HERE!!!</p>
