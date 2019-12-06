@@ -37,3 +37,7 @@ $.ajax({
     console.log(respRawg);
 })
 
+
+$(document).ready(function() {
+   $('select').material_select();
+});
