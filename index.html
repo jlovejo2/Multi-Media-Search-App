@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
     <link rel = "stylesheet"
     href = "https://fonts.googleapis.com/icon?family=Material+Icons">
  <link rel = "stylesheet"
@@ -13,8 +14,6 @@
     src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
  <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
  </script> 
- 
-
 </head>
 <body>
     <div class="heading">
@@ -27,45 +26,55 @@
         </div>
     </div>
 
-
+     <!-- Sergio did this  -->
+    <div class="row">
+      
     <div class="search-engine">
-            <form>
-                <input type="text" name="searchEngine">
-            </form>
-        </div>
-    <div class="input-field col s12">
-            <select>
+      <div class="col s6">
+          <form>
+              <input type="text" name="searchEngine">
+          </form>
+      </div>
+      <div class=" col s4">
+          <select>
               <option value="" disabled selected>Choose your option</option>
               <option value="1">Keyword</option>
               <option value="2">Title</option>
             </select>
           </div>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-    <!-- <div class="search-engine">
-        <form>
-            <input type="text" name="searchEngine">
-            <div class="dropdown">
-                <button class="dropbtn">
-                <a class= "wave-effect waves-light btn blue lighten-3"> Options</a>
-                <div class="dropdown-content">
-                  <a href="#">Title</a>
-                  <a href="#">Key word</a>
+    <!-- this section -->
+
+    
+        <div class="container">
+        <form class="boxes">
+                <div class="row">
+            <div class="col s4">
+                <div class="right-align">
+                <input class="check" type="checkbox" id="book-op" />
+                <label for="book-op">Book</label>
                 </div>
             </div>
-        </form> -->
-          <div class="peramitor">
-            <input type="checkbox" name="peram" value="book"> Book
-            <input type="checkbox" name="peram" value="movie"> Movie 
-            <input type="checkbox" name="peram" value="game"> Game 
-          </div>
+
+                <div class="col s4">
+                <div class="center-align">
+                <input class="check" type="checkbox" id="movie-op" />
+                <label for="movie-op">Movie</label>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="left-align">
+                <input class="check" type="checkbox" id="game-op"/>
+                <label for="game-op">Game</label>
+                </div>
+                </div>
+                </div>
+            </div>
+        </form>
+        </div>
+
+
+      
+
     </div>
     <div class="results">
         <p>RESULTS GO HERE!!!</p>
@@ -81,10 +90,6 @@
             </div>
           </footer>
 
-
-
-    
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
 
     <script src="javascript/javascript.js"></script>
 </body>
