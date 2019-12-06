@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+<!--Link to materialize-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
 <body>
-    <div class="heading">
-        <head>
-            <h1>Dude Squad and Ilana</h1>
-        </head>
-    </div>
-    <div class="search-engine">
-        <form>
-            <input type="text" name="searchEngine">
-            <div class="dropdown">
-                <button class="dropbtn">Options</button>
-                <div class="dropdown-content">
-                  <a href="#">Title</a>
-                  <a href="#">Key word</a>
+    <div class="container">
+        <div class="heading">
+
+            <head>
+                <h1>Dude Squad and Ilana</h1>
+            </head>
+        </div>
+        <div class="search-engine">
+            <form>
+                <input type="text" name="searchEngine">
+                <div class="dropdown">
+                    <button class="dropbtn">Options</button>
+                    <div class="dropdown-content">
+                        <a href="#">Title</a>
+                        <a href="#">Key word</a>
+                    </div>
+                </div>
+            </form>
+            <div class="peramitor">
+                <input type="checkbox" name="peram" value="book"> Book
+                <input type="checkbox" name="peram" value="movie"> Movie
+                <input type="checkbox" name="peram" value="game"> Game
+            </div>
+        </div>
+        <div class="results">
+            <div class="row" id="movieContent">
+                <div class="col s12">
+                    
+                </div>
+            </div >
+            <div class= "row" id="bookContent">
+                <div class="col s12">
+
                 </div>
             </div>
-        </form>
-          <div class="peramitor">
-            <input type="checkbox" name="peram" value="book"> Book
-            <input type="checkbox" name="peram" value="movie"> Movie 
-            <input type="checkbox" name="peram" value="game"> Game 
-          </div>
+            <div class="row" id="gameContent">
+                <div class="col s12">
+
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>Created by: Martin, Kobii, Iliana, Sergio , James</p>
+        </footer>
     </div>
-    <div class="results">
-        <p>RESULTS GO HERE!!!</p>
-    </div>
-    <footer>
-        <p>Created by: Martin, Kobii, Iliana, Sergio , James</p>
-    </footer>
-    
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Link to external javascript file-->
     <script src="javascript/javascript.js"></script>
 </body>
+
 </html>
