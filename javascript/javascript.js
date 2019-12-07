@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     $("select").formSelect();
 
+    $('.parallax').parallax();
 });
 
 
@@ -38,8 +39,6 @@ $.ajax({
 // }).then(function (respMovieDB) {
 //     console.log(respMovieDB);
 
-
-
 // })
 
 //-------------------------------------
@@ -71,6 +70,8 @@ $.ajax({
             genGenreList(rowDiv1, colDiv1, genreList, respRawg.results[index]);
 
             // $("#gameContent").append(colDiv)
+
+
 
         } else if ("3" < index <= "7") {
 
