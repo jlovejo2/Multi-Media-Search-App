@@ -42,18 +42,20 @@ $.ajax({
     console.log(respRawg);
 
     $.each(respRawg.results, function (index) {
-        //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
         // if (respRawg.results[index].name.includes(searchCriteria) === "true") {
             if ( -1 < index <= 4  ) {
-            var colDiv = $("<div>").attr("class", "col s3");
 
-            $("#gameContent").append(colDiv.append($("<h3>").attr("class","flow-text").text("Game name:" + respRawg.results[index].name)));
-            $("#gameContent").append(colDiv.append($("<img>").attr({"class":"responsive-img", "src": respRawg.results[index].background_image, "alt": "Game Image"})));
+            var colDiv = $("<div>").attr("class", "col s3");
+            var genreList = $("<ul>").text("genres: ");
+            
+            genTitleImgFromQuery ($("#gameContent"), colDiv, respRawg.results[index].name, respRawg.results[index].background_image );
+            genGenreList ($("#gameContent"), colDiv, genreList, respRawg.results[index]);
+
             // $("#gameContent").append(colDiv)
 
         }
-        console.log(1);
-        if(index === 12) {
+
+        if(index === 11) {
             return false;
         }
     });
@@ -61,3 +63,28 @@ $.ajax({
 
 });
 
+
+//                      Functions below this line
+//___________________________________________________________________________________
+
+
+function genTitleImgFromQuery (mainDiv, column, name, img ) {
+
+     //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+    mainDiv.append(column.append($("<h3>").attr("class","flow-text").text("Name:" + name )));
+    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+    mainDiv.append(column.append($("<img>").attr({"class":"responsive-img", "src": img, "alt": "Game Image"})));
+
+}
+
+function genGenreList (mainDiv, column, genreList, respObject) {
+
+    //function that runs for every index of the genre array to grab the name and place it into an li item.
+    $.each(respObject.genres, function (index){
+
+        genreList.append($("<li>").text(respObject.genres[index].name))
+        mainDiv.append(column.append(genreList));
+
+    });
+
+}
