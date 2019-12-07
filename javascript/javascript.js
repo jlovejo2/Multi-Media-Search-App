@@ -1,13 +1,13 @@
 
-//var searchCriteria = "Thor";
 
 $(document).ready(function () {
 
     $("select").formSelect();
 
+    $('.parallax').parallax();
 });
 
-/*
+
 //_____________________________________________
 //      Add materialize code above this line
 //____________________________________________
@@ -15,6 +15,7 @@ $(document).ready(function () {
 //------------------------------------------------
 //google API
 
+var searchCriteria = "Thor";
 var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria;
 
 $.ajax({
@@ -25,6 +26,7 @@ $.ajax({
 
 
 });
+
 // paul was here as well
 //-----------------------------------
 //The Movie DB
@@ -37,8 +39,6 @@ $.ajax({
 //     method: "GET"
 // }).then(function (respMovieDB) {
 //     console.log(respMovieDB);
-
-
 
 // })
 
@@ -53,38 +53,43 @@ $.ajax({
     console.log(respRawg);
 
     var rowDiv1 = $("<div>").attr("class", "row");
+    var rowDiv2 = $("<div>").attr("class", "row");
+    var rowDiv3 = $("<div>").attr("class", "row");
+
     $("#gameContent").append(rowDiv1);
+    $("#gameContent").append(rowDiv2);
+    $("#gameContent").append(rowDiv3);
 
     // if (respRawg.results[index].name.includes(searchCriteria) === "true")
     $.each(respRawg.results, function (index) {
-        if (-1 < index <= 3) {
+        if ("-1" < index <= "3") {
             
             var colDiv1 = $("<div>").attr("class", "col s3");
             var genreList = $("<ul>").text("genres: ");
-
-            
+    
             genTitleImgFromQuery(rowDiv1, colDiv1, respRawg.results[index].name, respRawg.results[index].background_image);
             genGenreList(rowDiv1, colDiv1, genreList, respRawg.results[index]);
 
             // $("#gameContent").append(colDiv)
 
-        } else if (3 < index <= 7) {
 
-            var colDiv = $("<div>").attr("class", "col s3");
+        } else if ("3" < index <= "7") {
+
+            var colDiv2 = $("<div>").attr("class", "col s3");
             var genreList = $("<ul>").text("genres: ");
 
-            genTitleImgFromQuery($("#gameContent"), colDiv, respRawg.results[index].name, respRawg.results[index].background_image);
-            genGenreList($("#gameContent"), colDiv, genreList, respRawg.results[index]);
+            genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
+            genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
 
             // $("#gameContent").append(colDiv)
 
-        } else if (7 < index <= 11) {
+        } else if ("7" < index <= "11") {
 
-            var colDiv = $("<div>").attr("class", "col s3");
+            var colDiv3 = $("<div>").attr("class", "col s3");
             var genreList = $("<ul>").text("genres: ");
 
-            genTitleImgFromQuery($("#gameContent"), colDiv, respRawg.results[index].name, respRawg.results[index].background_image);
-            genGenreList($("#gameContent"), colDiv, genreList, respRawg.results[index]);
+            genTitleImgFromQuery(rowDiv3, colDiv3, respRawg.results[index].name, respRawg.results[index].background_image);
+            genGenreList(rowDiv3, colDiv3, genreList, respRawg.results[index]);
 
             // $("#gameContent").append(colDiv)
 
@@ -95,35 +100,6 @@ $.ajax({
     });
 
 });
-
-
-
-    //                      Functions below this line
-    //___________________________________________________________________________________
-
-
-    function genTitleImgFromQuery(mainDiv, column, name, img) {
-
-        //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-        mainDiv.append(column.append($("<h3>").attr("class", "flow-text").text("Name:" + name)));
-        //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-        mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Game Image" })));
-
-    }
-
-    function genGenreList(mainDiv, column, genreList, respObject) {
-
-        //function that runs for every index of the genre array to grab the name and place it into an li item.
-        $.each(respObject.genres, function (index) {
-
-            genreList.append($("<li>").text(respObject.genres[index].name))
-            mainDiv.append(column.append(genreList));
-
-        });
-
-    }
-
-*/
 
 
 // $(".movie-input").on("click", function(event) {
@@ -170,7 +146,32 @@ $.ajax({
         
           $("#movieContent").append(movieMain);
 
+    });
 
-});
 // })
 
+
+    //                      Functions below this line
+    //___________________________________________________________________________________
+
+
+    function genTitleImgFromQuery(mainDiv, column, name, img) {
+
+        //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+        mainDiv.append(column.append($("<h3>").attr("class", "flow-text").text("Name:" + name)));
+        //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+        mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Game Image" })));
+
+    }
+
+    function genGenreList(mainDiv, column, genreList, respObject) {
+
+        //function that runs for every index of the genre array to grab the name and place it into an li item.
+        $.each(respObject.genres, function (index) {
+
+            genreList.append($("<li>").text(respObject.genres[index].name))
+            mainDiv.append(column.append(genreList));
+
+        });
+
+    }
