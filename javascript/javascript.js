@@ -1,4 +1,4 @@
-var searchCriteria = "Thor";
+
 
 $(document).ready(function () {
 
@@ -15,6 +15,7 @@ $(document).ready(function () {
 //------------------------------------------------
 //google API
 
+var searchCriteria = "Thor";
 var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria;
 
 $.ajax({
@@ -72,7 +73,6 @@ $.ajax({
             // $("#gameContent").append(colDiv)
 
 
-
         } else if ("3" < index <= "7") {
 
             var colDiv2 = $("<div>").attr("class", "col s3");
@@ -100,6 +100,55 @@ $.ajax({
     });
 
 });
+
+
+// $(".movie-input").on("click", function(event) {
+
+    // event.preventDefault();
+
+
+    var movie = "Titanic";
+
+    var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
+    
+    //AJAX call
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        var movieMain = $("<div>");
+        movieMain.addClass("movie");
+
+        //rating
+        
+        var rating = response.Rated;
+        var pRating = $("<p>");
+        pRating.text("Rating: " + rating);
+        movieMain.append(pRating);
+
+        //release
+        var dateRelease = response.Released;
+          var pRelease = $("<p>");
+          pRelease.text("Released: " + dateRelease);
+          movieMain.append(pRelease);
+
+         //plot 
+          var plot = response.Plot;
+          var pPlot = $("<p>");
+          pPlot.text("Plot: " + plot);
+          movieMain.append(pPlot);
+
+         //poster 
+          
+          var imgUrl = response.Poster;
+          var image = $("<img>").attr("src", imgUrl);
+          movieMain.append(image);
+        
+          $("#movieContent").append(movieMain);
+
+    });
+
+// })
 
 
     //                      Functions below this line
