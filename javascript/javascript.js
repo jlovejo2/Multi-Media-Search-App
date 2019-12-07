@@ -5,7 +5,9 @@ $(document).ready(function () {
     $("select").formSelect();
 
 });
-
+$(document).ready(function(){
+    $('.parallax').parallax();
+  });
 
 //_____________________________________________
 //      Add materialize code above this line
