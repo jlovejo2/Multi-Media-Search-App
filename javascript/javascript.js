@@ -6,187 +6,94 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
-//_____________________________________________
-//      Add materialize code above this line
-//____________________________________________
-
-
-$(".container").on("click", function (event) {
     
 
-    //search criteria investigation
-    console.log(event);
-    console.log($("#book-op")[0].checked);
-    console.log($(".select-dropdown").val());
+    //_____________________________________________
+    //      Add materialize code above this line
+    //____________________________________________
+    var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
+    var OMDBApiKey = "trilogy";
+    // var rawgApiKey = ;
+    var fullContainer = $("#fullPageContainer");
 
-    if (event.target.id === "userSearchButton" && $(".select-dropdown").val() === "Keyword") {
+    //click event on the entire container of the page
+    fullContainer.on("click", function (event) {
 
-        event.preventDefault();
-        $("#movieContent").empty();
-        $("gameContent").empty();
-        $("#bookContent").empty();
-        console.log(2);
-        
-        if ($("#book-op")[0].checked === true) {
-            
-            console.log(1);
-            //__________________________________________________
-            //___________Begin Code for Book Api (Googlebooks)_________
-            //__________________________________________________
-            // intitle: Returns results where the text following this keyword is found in the title.
-            // inauthor: Returns results where the text following this keyword is found in the author.
-            // inpublisher: Returns results where the text following this keyword is found in the publisher.
-            // subject: Returns results where the text following this keyword is listed in the category list of the volume.
 
-            var searchCriteria = "Thor";
-            var titleSearch = "intitle";
-            var authorSearch = "inauthor";
-            var subjectSearch = "subject";
-            var printType = "books";
-            var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
+        //search criteria investigation
+        console.log(event);
+        console.log($("#book-op")[0].checked);
+        console.log($(".select-dropdown").val());
+        console.log($("#userSearch").val());
 
-            var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + googleBooksApiKey;
+        //the below if statement is looking for a click on the submit buttom and if the dropdown menu option "Keyword is selected" 
+        if (event.target.id === "userSearchButton" && $(".select-dropdown").val() === "Keyword") {
 
-            $.ajax({
-                url: queryGoogleBooks,
-                method: "GET"
-            }).then(function (respGoogleBooks) {
-                console.log(respGoogleBooks);
+            event.preventDefault();
+            $("#movieContent").empty();
+            $("gameContent").empty();
+            $("#bookContent").empty();
+            console.log(2);
 
-                var countRowDiv1 = 0;
-                var rowDiv1 = $("<div>").attr("class", "row");
+            //this if statement is looking for the book checkbox to be checked
+            if ($("#book-op")[0].checked === true) {
 
-                $.each(respGoogleBooks.items, function (index) {
+                googleBooksQuery($("#userSearch").val(), googleBooksApiKey);
 
-                    console.log(respGoogleBooks.items[index].volumeInfo.title);
-                    console.log(respGoogleBooks.items[index].volumeInfo.authors);
-                    // console.log(respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail);
-                    console.log(respGoogleBooks.items[index].volumeInfo.subtitle);
-                    console.log(respGoogleBooks.items[index].volumeInfo.publishedDate);
-                    console.log(respGoogleBooks.items[index].volumeInfo.buylink);
+            }
 
-                    if (countRowDiv1 < 4) {
+            if ($("#movie-op")[0].checked === true) {
 
-                        var colDiv1 = $("<div>").attr("class", "col s3");
-                        var authorList = $("<ul>").attr("class", "row");
+                OMDBquery($("#userSearch").val(), OMDBApiKey);
 
-                        //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-                        rowDiv1.append(colDiv1.append($("<h5>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
-                        rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
-                        rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
-                        //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-                        // rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
-                        // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
-                        genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
+            }
 
-                        countRowDiv1++;
+            if ($("#game-op")[0].checked === true) {
+                
+                rawgQuery($("#userSearch").val());
 
-                    } else {
+            }
 
-                        $("#bookContent").append(rowDiv1);
-                        rowDiv1 = $("<div>").attr("class", "row");
-                        countRowDiv1 = 0;
-                    }
-                })
+            if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false ){
+                
+                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+                var modalContentDiv = $("<div>").attr("class", "modal-content");
+                var modalFooter = $("<div>").attr("class", "modal-footer");
 
-            });
+                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                    modalContentDiv.append($("<p>").text("Checkbox not clicked.  Please check at least one."))
 
+                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+
+                    modalDiv.append(modalContentDiv);
+                    modalDiv.append(modalFooter);
+
+                    fullContainer.append(modalDiv);
+
+                $("#checkbockModal").modal();
+
+            }
+             else if ($(".select-dropdown").val() === "Choose your option") {
+
+                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+                var modalContentDiv = $("<div>").attr("class", "modal-content");
+                var modalFooter = $("<div>").attr("class", "modal-footer");
+
+                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                    modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
+
+                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+
+                    modalDiv.append(modalContentDiv);
+                    modalDiv.append(modalFooter);
+
+                    fullContainer.append(modalDiv);
+
+                $('.modal').modal();
+            }
         }
-        
-        if ($("#movie-op")[0].checked === true) {
-            console.log(3);
-            //__________________________________________________
-            //___________Begin Code for Movie Api (OMDB)_________
-            //__________________________________________________
-            var movie = "Titanic";
 
-            var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
-
-            //AJAX call
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-                var movieMain = $("<div>");
-                movieMain.addClass("movie");
-
-                //rating
-
-                var rating = response.Rated;
-                var pRating = $("<p>");
-                pRating.text("Rating: " + rating);
-                movieMain.append(pRating);
-
-                //release
-                var dateRelease = response.Released;
-                var pRelease = $("<p>");
-                pRelease.text("Released: " + dateRelease);
-                movieMain.append(pRelease);
-
-                //plot 
-                var plot = response.Plot;
-                var pPlot = $("<p>");
-                pPlot.text("Plot: " + plot);
-                movieMain.append(pPlot);
-
-                //poster 
-
-                var imgUrl = response.Poster;
-                var image = $("<img>").attr("src", imgUrl);
-                movieMain.append(image);
-
-                $("#movieContent").append(movieMain);
-            });
-        }
-        
-        if ($("#game-op")[0].checked === true) {
-            //__________________________________________________
-            //___________Begin Code for Game Api (Rawg)_________
-            //__________________________________________________
-            var searchCriteria = "Thor";
-            var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
-
-            //code for the ajax query call to the Rawg api
-            $.ajax({
-                url: queryRawg,
-                method: "GET"
-            }).then(function (respRawg) {
-                console.log(respRawg);
-
-                //variable that is created in order to limit the number of columns placed into generated row div as 4
-                var countRowDiv2 = 0;
-                var rowDiv2 = $("<div>").attr("class", "row");
-
-                //each function that runs for every index of the resp object returned by the ajax call to Rawg api
-                $.each(respRawg.results, function (index) {
-
-                    //this if statement declares that the code will only run while count variable is less than 4.  
-                    if (countRowDiv2 < 4) {
-
-                        var colDiv2 = $("<div>").attr("class", "col s3");
-                        var genreList = $("<ul>").text("genres: ");
-
-                        //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
-                        genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
-                        //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
-                        genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
-
-                        countRowDiv2++;
-
-                    } else {
-
-                        //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
-                        $("#gameContent").append(rowDiv2);
-                        //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
-                        rowDiv2 = $("<div>").attr("class", "row");
-                        //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
-                        countRowDiv2 = 0;
-                    }
-                });
-            });
-        }
-    }
-})
+    });
 
 });
 
@@ -261,6 +168,165 @@ function genAuthorList(mainDiv, column, listDiv, respObject) {
     });
 }
 
+function googleBooksQuery(searchCriteria, apiKey) {
+
+    console.log(1);
+    //__________________________________________________
+    //___________Begin Code for Book Api (Googlebooks)_________
+    //__________________________________________________
+    // intitle: Returns results where the text following this keyword is found in the title.
+    // inauthor: Returns results where the text following this keyword is found in the author.
+    // inpublisher: Returns results where the text following this keyword is found in the publisher.
+    // subject: Returns results where the text following this keyword is listed in the category list of the volume.
+
+    var searchCriteria = "Thor";
+    var titleSearch = "intitle";
+    var authorSearch = "inauthor";
+    var subjectSearch = "subject";
+    var printType = "books";
+
+
+    var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
+
+    $.ajax({
+        url: queryGoogleBooks,
+        method: "GET"
+    }).then(function (respGoogleBooks) {
+        console.log(respGoogleBooks);
+
+        var countRowDiv1 = 0;
+        var rowDiv1 = $("<div>").attr("class", "row");
+
+        $.each(respGoogleBooks.items, function (index) {
+
+            console.log(respGoogleBooks.items[index].volumeInfo.title);
+            console.log(respGoogleBooks.items[index].volumeInfo.authors);
+            // console.log(respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail);
+            console.log(respGoogleBooks.items[index].volumeInfo.subtitle);
+            console.log(respGoogleBooks.items[index].volumeInfo.publishedDate);
+            console.log(respGoogleBooks.items[index].volumeInfo.buylink);
+
+            if (countRowDiv1 < 4) {
+
+                var colDiv1 = $("<div>").attr("class", "col s3");
+                var authorList = $("<ul>").attr("class", "row");
+
+                //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+                rowDiv1.append(colDiv1.append($("<h5>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
+                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
+                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
+                //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+                // rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
+                genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
+
+                countRowDiv1++;
+
+            } else {
+
+                $("#bookContent").append(rowDiv1);
+                rowDiv1 = $("<div>").attr("class", "row");
+                countRowDiv1 = 0;
+            }
+        })
+    });
+};
+
+
+function OMDBquery(movie, apiKey) {
+
+    console.log(3);
+
+    //__________________________________________________
+    //___________Begin Code for Movie Api (OMDB)_________
+    //__________________________________________________
+
+    var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + apiKey;
+
+    //AJAX call
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        var movieMain = $("<div>");
+        movieMain.addClass("movie");
+
+        //rating
+
+        var rating = response.Rated;
+        var pRating = $("<p>");
+        pRating.text("Rating: " + rating);
+        movieMain.append(pRating);
+
+        //release
+        var dateRelease = response.Released;
+        var pRelease = $("<p>");
+        pRelease.text("Released: " + dateRelease);
+        movieMain.append(pRelease);
+
+        //plot 
+        var plot = response.Plot;
+        var pPlot = $("<p>");
+        pPlot.text("Plot: " + plot);
+        movieMain.append(pPlot);
+
+        //poster 
+
+        var imgUrl = response.Poster;
+        var image = $("<img>").attr("src", imgUrl);
+        movieMain.append(image);
+
+        $("#movieContent").append(movieMain);
+    });
+
+};
+
+
+function rawgQuery(searchCriteria) {
+    //__________________________________________________
+    //___________Begin Code for Game Api (Rawg)_________
+    //__________________________________________________
+    var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
+
+    //code for the ajax query call to the Rawg api
+    $.ajax({
+        url: queryRawg,
+        method: "GET"
+    }).then(function (respRawg) {
+        console.log(respRawg);
+
+        //variable that is created in order to limit the number of columns placed into generated row div as 4
+        var countRowDiv2 = 0;
+        var rowDiv2 = $("<div>").attr("class", "row");
+
+        //each function that runs for every index of the resp object returned by the ajax call to Rawg api
+        $.each(respRawg.results, function (index) {
+
+            //this if statement declares that the code will only run while count variable is less than 4.  
+            if (countRowDiv2 < 4) {
+
+                var colDiv2 = $("<div>").attr("class", "col s3");
+                var genreList = $("<ul>").text("genres: ");
+
+                //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
+                genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
+                //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
+                genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
+
+                countRowDiv2++;
+
+            } else {
+
+                //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
+                $("#gameContent").append(rowDiv2);
+                //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
+                rowDiv2 = $("<div>").attr("class", "row");
+                //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
+                countRowDiv2 = 0;
+            }
+        });
+    });
+}
 
 
 
