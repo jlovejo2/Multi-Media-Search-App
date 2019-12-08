@@ -1,92 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
     <!-- The only way for the search bar to work I need to have these tags -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 </head>
 
 <body>
-    <div class="container">
-        <div class="row heading">
-            <div class="card-panel blue lighten-3">
-                <span class="grey-text grey lighten-5">
-
-                    <head>
-                        <h1>Dude Squad and Ilana</h1>
-                    </head>
-                </span>
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="search-engine">
-                <div class="col s6">
-                    <form>
-                        <input id="userSearch" type="text" name="searchEngine"></input>
-                    </form>
+        <div class="container">
+                <div class="row heading">
+                        <div class="card-panel blue lighten-3">
+                            <span class="grey-text grey lighten-5 center">
+                        <head>
+                            <h1>Sauce Control</h1>
+                        </head>
+                            </span>
+                        </div>
                 </div>
-                <div class="input-field col s4">
-                    <select>
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="1">Keyword</option>
-                        <option value="2">Title</option>
-                    </select>
-                </div>
-            </div>
-            <form class="boxes">
+                <div id="index-banner" class="parallax-container">
+                    <div class="section no-pad-bot mt75">
+                    <div class="container">
+                    <br><br>
+                    
+                <div class="row">
+      
+                    <div class="search-engine">
+                        <div class="col s6">
+                              <form>
+                                  <input id="userSearch" type="text" name="searchEngine">
+                              </form>
+                        </div>
+                        <div class="input-field col s4">
+                                <select>
+                                  <option value="" disabled selected>Choose your option</option>
+                                  <option value="1">Keyword</option>
+                                  <option value="2">Title</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>  
+        <form class="boxes">
                 <div class="row">
                     <div class="col s4">
                         <div class="right-align">
                             <label>
-                                <input class="check" type="checkbox" id="book-op" />
-                                <span for="book-op">Book</span>
-                            </label>
+                             <input class="check" type="checkbox" id="book-op" />
+                             <span for="book-op">Book</span>
+                             </label>
                         </div>
                     </div>
                     <div class="col s4">
                         <div class="center-align">
-                            <label>
-                                <input class="check" type="checkbox" id="movie-op" />
-                                <span for="movie-op">Movie</span>
-                            </label>
+                                <label>
+                                     <input class="check" type="checkbox" id="movie-op" />
+                                     <span for="movie-op">Movie</span>
+                                </label>
                         </div>
                     </div>
                     <div class="col s4">
                         <div class="left-align">
-                            <label>
-                                <input class="check" type="checkbox" id="game-op" />
+                             <label>
+                                <input class="check" type="checkbox" id="game-op"/>
+
                                 <span for="game-op">Game</span>
                             </label>
                         </div>
                     </div>
                 </div>
-            </form>
+        </form>
+                    </div>
+        <div class="parallax">
+            <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
         </div>
+                    </div>
+                    </div>
         <div class="row results">
-            <div class="col s12" id="moiveContent"></div>
-            <div class="col s12" id="bookContent"></div>
-            <div class="col s12" id="gameContent"></div>
-        </div>
-
-        <footer class="page-footer grey darken-3">
-
-
-            <div class="footer-copyright">
-                <p>
-                    Created by: Martin, Kobii, Iliana, Sergio , James
-                </p>
+                <div class="col s12" id="movieContent"></div>
+                <div class="col s12" id="bookContent"></div>
+                <div class="col s12" id="gameContent"></div>
             </div>
-        </footer>
+
+          
+            <footer class="page-footer grey darken-3">
+                <div class="footer-copyright">
+                    <p>
+                         Created by: Martin, Kobii, Iliana, Sergio , James  
+                    </p>
+                </div>
+            </footer>
+      
     </div>
     <script src="javascript/javascript.js"></script>
 </body>
-
 </html>

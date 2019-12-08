@@ -1,9 +1,10 @@
-var searchCriteria = "Thor";
+
 
 $(document).ready(function () {
 
     $("select").formSelect();
 
+    $('.parallax').parallax();
 });
 
 
@@ -14,6 +15,7 @@ $(document).ready(function () {
 //------------------------------------------------
 //google API
 
+var searchCriteria = "Thor";
 var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria;
 
 $.ajax({
@@ -37,8 +39,6 @@ $.ajax({
 //     method: "GET"
 // }).then(function (respMovieDB) {
 //     console.log(respMovieDB);
-
-
 
 // })
 
@@ -80,7 +80,7 @@ $.ajax({
     
             genTitleImgFromQuery(rowDiv1, colDiv1, respRawg.results[index].name, respRawg.results[index].background_image);
             genGenreList(rowDiv1, colDiv1, genreList, respRawg.results[index]);
-
+          
             countRowDiv++;
           
         } else {
@@ -94,8 +94,56 @@ $.ajax({
 
 });
 
-
 // });
+
+// $(".movie-input").on("click", function(event) {
+
+    // event.preventDefault();
+
+
+    var movie = "Titanic";
+
+    var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
+    
+    //AJAX call
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        var movieMain = $("<div>");
+        movieMain.addClass("movie");
+
+        //rating
+        
+        var rating = response.Rated;
+        var pRating = $("<p>");
+        pRating.text("Rating: " + rating);
+        movieMain.append(pRating);
+
+        //release
+        var dateRelease = response.Released;
+          var pRelease = $("<p>");
+          pRelease.text("Released: " + dateRelease);
+          movieMain.append(pRelease);
+
+         //plot 
+          var plot = response.Plot;
+          var pPlot = $("<p>");
+          pPlot.text("Plot: " + plot);
+          movieMain.append(pPlot);
+
+         //poster 
+          
+          var imgUrl = response.Poster;
+          var image = $("<img>").attr("src", imgUrl);
+          movieMain.append(image);
+        
+          $("#movieContent").append(movieMain);
+
+    });
+
+// })
+
 
 
     //                      Functions below this line
