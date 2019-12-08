@@ -43,62 +43,59 @@ $.ajax({
 // })
 
 //-------------------------------------
-//
+
+// click event for the user search button 
+// $(".container").on("keyup", function (event) {
+//     event.preventDefault();
+//     console.log(event);
+    // if event.key === "enter"
+    // var userSearch = $("#userSearch").val()
+    // 
+
+// if ( e.keycode === 13) {
+
+
+
 var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
 
+//code for the ajax query call to the Rawg api
 $.ajax({
     url: queryRawg,
     method: "GET"
 }).then(function (respRawg) {
     console.log(respRawg);
 
+    //variable that is created in order to limit the number of columns placed into generated row div as 4
+    var countRowDiv = 0;
     var rowDiv1 = $("<div>").attr("class", "row");
-    var rowDiv2 = $("<div>").attr("class", "row");
-    var rowDiv3 = $("<div>").attr("class", "row");
 
-    $("#gameContent").append(rowDiv1);
-    $("#gameContent").append(rowDiv2);
-    $("#gameContent").append(rowDiv3);
-
-    // if (respRawg.results[index].name.includes(searchCriteria) === "true")
+    //each function that runs for every index of the resp object returned by the ajax call to Rawg api
     $.each(respRawg.results, function (index) {
-        if ("-1" < index <= "3") {
-            
+
+        //this if statement declares that the code will only run while count variable is less than 4.  
+        if (countRowDiv < 4) {
+           
             var colDiv1 = $("<div>").attr("class", "col s3");
             var genreList = $("<ul>").text("genres: ");
     
             genTitleImgFromQuery(rowDiv1, colDiv1, respRawg.results[index].name, respRawg.results[index].background_image);
             genGenreList(rowDiv1, colDiv1, genreList, respRawg.results[index]);
 
-            // $("#gameContent").append(colDiv)
-
-        } else if ("3" < index <= "7") {
-
-            var colDiv2 = $("<div>").attr("class", "col s3");
-            var genreList = $("<ul>").text("genres: ");
-
-            genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
-            genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
-
-            // $("#gameContent").append(colDiv)
-
-        } else if ("7" < index <= "11") {
-
-            var colDiv3 = $("<div>").attr("class", "col s3");
-            var genreList = $("<ul>").text("genres: ");
-
-            genTitleImgFromQuery(rowDiv3, colDiv3, respRawg.results[index].name, respRawg.results[index].background_image);
-            genGenreList(rowDiv3, colDiv3, genreList, respRawg.results[index]);
-
-            // $("#gameContent").append(colDiv)
-
+            countRowDiv++;
+          
         } else {
-            return false;
+            console.log(rowDiv1);
+            $("#gameContent").append(rowDiv1);
+            rowDiv1 = $("<div>").attr("class", "row");
+            countRowDiv = 0;
         }
 
     });
 
 });
+
+
+// });
 
 
     //                      Functions below this line
