@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
-    
+
 
     //_____________________________________________
     //      Add materialize code above this line
@@ -15,222 +15,200 @@ $(document).ready(function () {
     var OMDBApiKey = "trilogy";
     // var rawgApiKey = ;
     var fullContainer = $("#fullPageContainer");
+    var mainModalDiv = $("<div>").attr({"id": "mainModalDiv", "class": "row"});
+
+    fullContainer.append(mainModalDiv);
 
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
 
 
         //search criteria investigation
-        console.log(event);
-        console.log($("#book-op")[0].checked);
-        console.log($(".select-dropdown").val());
-        console.log($("#userSearch").val());
+        // console.log($("body"))
+        // console.log(event);
+        // console.log($("#book-op")[0].checked);
+        // console.log($(".select-dropdown").val());
+        // console.log($("#userSearch").val());
 
         //the below if statement is looking for a click on the submit buttom and if the dropdown menu option "Keyword is selected" 
-        if (event.target.id === "userSearchButton" && $(".select-dropdown").val() === "Keyword") {
+        if (event.target.id === "userSearchButton") {
 
-            event.preventDefault();
+            // event.preventDefault();
+            
+            
+            $("body").removeAttr("style");
+            $("#mainModalDiv").empty();
             $("#movieContent").empty();
             $("gameContent").empty();
             $("#bookContent").empty();
-            console.log(2);
 
-            //this if statement is looking for the book checkbox to be checked
-            if ($("#book-op")[0].checked === true) {
+            if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false) {
 
-                googleBooksQuery($("#userSearch").val(), googleBooksApiKey);
-
-            }
-
-            if ($("#movie-op")[0].checked === true) {
-
-                OMDBquery($("#userSearch").val(), OMDBApiKey);
-
-            }
-
-            if ($("#game-op")[0].checked === true) {
-                
-                rawgQuery($("#userSearch").val());
-
-            }
-
-            if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false ){
-                
-                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+                var modalDiv = $("<div>").attr({ "class": "modal", "id": "checkboxModal" });
                 var modalContentDiv = $("<div>").attr("class", "modal-content");
                 var modalFooter = $("<div>").attr("class", "modal-footer");
 
-                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
-                    modalContentDiv.append($("<p>").text("Checkbox not clicked.  Please check at least one."))
+                modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                modalContentDiv.append($("<p>").text("Checkbox not clicked.  Please check at least one."))
 
-                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+                modalFooter.append($("<a>").attr({ "href": "#!", "class": "modal-close waves-effect waves-green btn-flat" }).text("Close"));
 
-                    modalDiv.append(modalContentDiv);
-                    modalDiv.append(modalFooter);
+                modalDiv.append(modalContentDiv);
+                modalDiv.append(modalFooter);
 
-                    fullContainer.append(modalDiv);
+                $("#mainModalDiv").append(modalDiv);
 
-                $("#checkbockModal").modal();
+                //this line of code is important to initialize the modal before triggering it in the code to open
+                $('.modal').modal();
 
+                $("#checkboxModal").modal('open');
             }
-             else if ($(".select-dropdown").val() === "Choose your option") {
 
-                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+            if ($(".select-dropdown").val() === "Keyword") {
+
+                //this if statement is looking for the book checkbox to be checked
+                if ($("#book-op")[0].checked === true) {
+
+                    googleBooksQuery($("#userSearch").val(), googleBooksApiKey);
+                }
+                //this if statement is looking for the movie checkbox to be checked
+                if ($("#movie-op")[0].checked === true) {
+
+                    OMDBquery($("#userSearch").val(), OMDBApiKey);
+                }
+                //this if statement is looking for the game checkbox to be checked
+                if ($("#game-op")[0].checked === true) {
+
+                    rawgQuery($("#userSearch").val());
+                }
+            //this if statement runs if Title is selected in the pulldown menu
+            } else if ($(".select-dropdown").val() === "Title") {
+
+                //code not written yet
+            
+            //Since the other two conditions in the pulldown menu are code this else refers to if nothing has been selected in the menu.
+            } else {
+                var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
                 var modalContentDiv = $("<div>").attr("class", "modal-content");
                 var modalFooter = $("<div>").attr("class", "modal-footer");
 
-                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
-                    modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
+                modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
 
-                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+                modalFooter.append($("<a>").attr({ "href": "#!", "class": "modal-close waves-effect waves-green btn-flat" }).text("Close"));
 
-                    modalDiv.append(modalContentDiv);
-                    modalDiv.append(modalFooter);
+                modalDiv.append(modalContentDiv);
+                modalDiv.append(modalFooter);
 
-                    fullContainer.append(modalDiv);
+                $("#mainModalDiv").append(modalDiv);
 
                 $('.modal').modal();
-            }
-        }
 
+                $("#dropdownModal").modal('open');
+            }
+
+        }
     });
 
 });
-
-
-
-
-
-
-// // click event for the user search button 
-// $(".container").on("keyup", function (event) {
-
-//     // $("#userSearch").preventDefault();
-//     if (event.key === "enter") {
-
-//         console.log(event);
-//         console.log(event.target.value);
-
-//     }
-
-// });
-// if event.key === "enter"
-// var userSearch = $("#userSearch").val()
-// 
-
-// if ( e.keycode === 13) {
-
-
-// });
-
-// $(".movie-input").on("click", function(event) {
-
-// event.preventDefault();
-
-
-// })
-
-
-
 //                      Functions below this line
 //___________________________________________________________________________________
 
 //This function grabs the game name and image from the Rawg Api and appends it into a column div and then appends that column into the mainDiv parameter
 function genTitleImgFromQuery(mainDiv, column, name, img) {
 
-    //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-    mainDiv.append(column.append($("<h5>").attr("class", "flow-text").text("Name: " + name)));
-    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-    mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Image" })));
+        //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+        mainDiv.append(column.append($("<h5>").attr("class", "flow-text").text("Name: " + name)));
+        //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+        mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Image" })));
 
-}
+    }
 
 //This function grabs the genre object from the Rawg Api and places the info into a list which is appended into a column.  That column is then appened to the mainDiv parameter
 function genGenreList(mainDiv, column, listDiv, respObject) {
 
-    //function that runs for every index of the genre array to grab the name and place it into an li item.
-    $.each(respObject.genres, function (index) {
+        //function that runs for every index of the genre array to grab the name and place it into an li item.
+        $.each(respObject.genres, function (index) {
 
-        listDiv.append($("<li>").text(respObject.genres[index].name))
-        mainDiv.append(column.append(listDiv));
+            listDiv.append($("<li>").text(respObject.genres[index].name))
+            mainDiv.append(column.append(listDiv));
 
-    });
+        });
 
-}
+    }
 
 function genAuthorList(mainDiv, column, listDiv, respObject) {
-    //function that runs for every index of the genre array to grab the name and place it into an li item.
-    $.each(respObject.authors, function (index) {
+        //function that runs for every index of the genre array to grab the name and place it into an li item.
+        $.each(respObject.authors, function (index) {
 
-        listDiv.append($("<li>").text(respObject.authors[index]));
-        mainDiv.append(column.append(listDiv));
+            listDiv.append($("<li>").text(respObject.authors[index]));
+            mainDiv.append(column.append(listDiv));
 
-    });
-}
+        });
+    }
 
 function googleBooksQuery(searchCriteria, apiKey) {
 
-    console.log(1);
-    //__________________________________________________
-    //___________Begin Code for Book Api (Googlebooks)_________
-    //__________________________________________________
-    // intitle: Returns results where the text following this keyword is found in the title.
-    // inauthor: Returns results where the text following this keyword is found in the author.
-    // inpublisher: Returns results where the text following this keyword is found in the publisher.
-    // subject: Returns results where the text following this keyword is listed in the category list of the volume.
+        console.log(1);
+        //__________________________________________________
+        //___________Begin Code for Book Api (Googlebooks)_________
+        //__________________________________________________
+        // intitle: Returns results where the text following this keyword is found in the title.
+        // inauthor: Returns results where the text following this keyword is found in the author.
+        // inpublisher: Returns results where the text following this keyword is found in the publisher.
+        // subject: Returns results where the text following this keyword is listed in the category list of the volume.
 
-    var searchCriteria = "Thor";
-    var titleSearch = "intitle";
-    var authorSearch = "inauthor";
-    var subjectSearch = "subject";
-    var printType = "books";
+        var titleSearch = "intitle";
+        var authorSearch = "inauthor";
+        var subjectSearch = "subject";
+        var printType = "books";
 
 
-    var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
+        var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
 
-    $.ajax({
-        url: queryGoogleBooks,
-        method: "GET"
-    }).then(function (respGoogleBooks) {
-        console.log(respGoogleBooks);
+        $.ajax({
+            url: queryGoogleBooks,
+            method: "GET"
+        }).then(function (respGoogleBooks) {
+            console.log(respGoogleBooks);
 
-        var countRowDiv1 = 0;
-        var rowDiv1 = $("<div>").attr("class", "row");
+            var countRowDiv1 = 0;
+            var rowDiv1 = $("<div>").attr("class", "row");
 
-        $.each(respGoogleBooks.items, function (index) {
+            $.each(respGoogleBooks.items, function (index) {
 
-            console.log(respGoogleBooks.items[index].volumeInfo.title);
-            console.log(respGoogleBooks.items[index].volumeInfo.authors);
-            // console.log(respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail);
-            console.log(respGoogleBooks.items[index].volumeInfo.subtitle);
-            console.log(respGoogleBooks.items[index].volumeInfo.publishedDate);
-            console.log(respGoogleBooks.items[index].volumeInfo.buylink);
+                console.log(respGoogleBooks.items[index].volumeInfo.title);
+                console.log(respGoogleBooks.items[index].volumeInfo.authors);
+                // console.log(respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail);
+                console.log(respGoogleBooks.items[index].volumeInfo.subtitle);
+                console.log(respGoogleBooks.items[index].volumeInfo.publishedDate);
+                console.log(respGoogleBooks.items[index].volumeInfo.buylink);
 
-            if (countRowDiv1 < 4) {
+                if (countRowDiv1 < 4) {
 
-                var colDiv1 = $("<div>").attr("class", "col s3");
-                var authorList = $("<ul>").attr("class", "row");
+                    var colDiv1 = $("<div>").attr("class", "col s3");
+                    var authorList = $("<ul>").attr("class", "row");
 
-                //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-                rowDiv1.append(colDiv1.append($("<h5>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
-                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
-                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
-                //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-                // rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
-                // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
-                genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
+                    //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+                    rowDiv1.append(colDiv1.append($("<h5>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
+                    rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
+                    rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
+                    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+                    // rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                    // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
+                    genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
 
-                countRowDiv1++;
+                    countRowDiv1++;
 
-            } else {
+                } else {
 
-                $("#bookContent").append(rowDiv1);
-                rowDiv1 = $("<div>").attr("class", "row");
-                countRowDiv1 = 0;
-            }
-        })
-    });
-};
+                    $("#bookContent").append(rowDiv1);
+                    rowDiv1 = $("<div>").attr("class", "row");
+                    countRowDiv1 = 0;
+                }
+            })
+        });
+    };
 
 
 function OMDBquery(movie, apiKey) {
@@ -331,11 +309,41 @@ function rawgQuery(searchCriteria) {
 
 
 
-    //old code being saved
-    //
-    //
-    //
-    //-----------------------------------
+//old code being saved
+//
+//
+//
+//-----------------------------------
+
+// // click event for the user search button 
+// $(".container").on("keyup", function (event) {
+
+//     // $("#userSearch").preventDefault();
+//     if (event.key === "enter") {
+
+//         console.log(event);
+//         console.log(event.target.value);
+
+//     }
+
+// });
+// if event.key === "enter"
+// var userSearch = $("#userSearch").val()
+// 
+
+// if ( e.keycode === 13) {
+
+
+// });
+
+// $(".movie-input").on("click", function(event) {
+
+// event.preventDefault();
+
+
+// })
+
+//---------------------------------------    
 //The Movie DB
 
 // var movieDBKey = "a5b6a31636acf8a8c3c75e4575e245dd";
