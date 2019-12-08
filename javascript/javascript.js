@@ -77,16 +77,21 @@ $.ajax({
            
             var colDiv1 = $("<div>").attr("class", "col s3");
             var genreList = $("<ul>").text("genres: ");
-    
+            
+            //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
             genTitleImgFromQuery(rowDiv1, colDiv1, respRawg.results[index].name, respRawg.results[index].background_image);
+            //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
             genGenreList(rowDiv1, colDiv1, genreList, respRawg.results[index]);
           
             countRowDiv++;
           
         } else {
-            console.log(rowDiv1);
+            
+            //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
             $("#gameContent").append(rowDiv1);
+            //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
             rowDiv1 = $("<div>").attr("class", "row");
+            //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
             countRowDiv = 0;
         }
 
@@ -149,7 +154,7 @@ $.ajax({
     //                      Functions below this line
     //___________________________________________________________________________________
 
-
+    //This function grabs the game name and image from the Rawg Api and appends it into a column div and then appends that column into the mainDiv parameter
     function genTitleImgFromQuery(mainDiv, column, name, img) {
 
         //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
@@ -159,6 +164,7 @@ $.ajax({
 
     }
 
+    //This function grabs the genre object from the Rawg Api and places the info into a list which is appended into a column.  That column is then appened to the mainDiv parameter
     function genGenreList(mainDiv, column, genreList, respObject) {
 
         //function that runs for every index of the genre array to grab the name and place it into an li item.
