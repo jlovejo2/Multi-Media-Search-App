@@ -5,27 +5,28 @@ $(document).ready(function () {
     $("select").formSelect();
 
     $('.parallax').parallax();
-});
-
 
 //_____________________________________________
 //      Add materialize code above this line
 //____________________________________________
 
 
-
 $(".container").on("click", function (event) {
-    console.log(event);
+    
 
+    //search criteria investigation
+    console.log(event);
     console.log($("#book-op")[0].checked);
     console.log($(".select-dropdown").val());
 
-    if (event.target.type === "submit" && $(".select-dropdown").val() === "Keyword") {
+    if (event.target.id === "userSearchButton" && $(".select-dropdown").val() === "Keyword") {
 
+        event.preventDefault();
         $("#movieContent").empty();
         $("gameContent").empty();
         $("#bookContent").empty();
-
+        console.log(2);
+        
         if ($("#book-op")[0].checked === true) {
             
             console.log(1);
@@ -91,9 +92,9 @@ $(".container").on("click", function (event) {
             });
 
         }
-
+        
         if ($("#movie-op")[0].checked === true) {
-            
+            console.log(3);
             //__________________________________________________
             //___________Begin Code for Movie Api (OMDB)_________
             //__________________________________________________
@@ -137,7 +138,7 @@ $(".container").on("click", function (event) {
                 $("#movieContent").append(movieMain);
             });
         }
-
+        
         if ($("#game-op")[0].checked === true) {
             //__________________________________________________
             //___________Begin Code for Game Api (Rawg)_________
@@ -187,23 +188,25 @@ $(".container").on("click", function (event) {
     }
 })
 
-
-
-
-
-
-// click event for the user search button 
-$(".container").on("keyup", function (event) {
-
-    // $("#userSearch").preventDefault();
-    if (event.key === "enter") {
-
-        console.log(event);
-        console.log(event.target.value);
-
-    }
-
 });
+
+
+
+
+
+
+// // click event for the user search button 
+// $(".container").on("keyup", function (event) {
+
+//     // $("#userSearch").preventDefault();
+//     if (event.key === "enter") {
+
+//         console.log(event);
+//         console.log(event.target.value);
+
+//     }
+
+// });
 // if event.key === "enter"
 // var userSearch = $("#userSearch").val()
 // 
