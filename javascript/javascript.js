@@ -6,16 +6,18 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
+    
+
     //_____________________________________________
     //      Add materialize code above this line
     //____________________________________________
     var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
     var OMDBApiKey = "trilogy";
     // var rawgApiKey = ;
-    var container = $(".container");
+    var fullContainer = $("#fullPageContainer");
 
     //click event on the entire container of the page
-    container.on("click", function (event) {
+    fullContainer.on("click", function (event) {
 
 
         //search criteria investigation
@@ -37,11 +39,11 @@ $(document).ready(function () {
             if ($("#book-op")[0].checked === true) {
 
                 googleBooksQuery($("#userSearch").val(), googleBooksApiKey);
+
             }
 
             if ($("#movie-op")[0].checked === true) {
 
-                console.log($("#userSearch").val());
                 OMDBquery($("#userSearch").val(), OMDBApiKey);
 
             }
@@ -49,6 +51,45 @@ $(document).ready(function () {
             if ($("#game-op")[0].checked === true) {
                 
                 rawgQuery($("#userSearch").val());
+
+            }
+
+            if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false ){
+                
+                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+                var modalContentDiv = $("<div>").attr("class", "modal-content");
+                var modalFooter = $("<div>").attr("class", "modal-footer");
+
+                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                    modalContentDiv.append($("<p>").text("Checkbox not clicked.  Please check at least one."))
+
+                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+
+                    modalDiv.append(modalContentDiv);
+                    modalDiv.append(modalFooter);
+
+                    fullContainer.append(modalDiv);
+
+                $("#checkbockModal").modal();
+
+            }
+             else if ($(".select-dropdown").val() === "Choose your option") {
+
+                var modalDiv = $("<div>").attr({"class": "modal", "id": "checkboxModal"});
+                var modalContentDiv = $("<div>").attr("class", "modal-content");
+                var modalFooter = $("<div>").attr("class", "modal-footer");
+
+                    modalContentDiv.append($("<h4>").text("Notification: Please read "));
+                    modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
+
+                    modalFooter.append($("<a>").attr({"href":"#!","class":"modal-close waves-effect waves-green btn-flat"}).text("Close"));
+
+                    modalDiv.append(modalContentDiv);
+                    modalDiv.append(modalFooter);
+
+                    fullContainer.append(modalDiv);
+
+                $('.modal').modal();
             }
         }
 
