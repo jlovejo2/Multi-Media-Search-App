@@ -145,7 +145,13 @@ $.ajax({
         
           $("#movieContent").append(movieMain);
 
-    });
+        });
+
+        function successCallback(data) {
+            'use strict';
+            $('#results').text('');
+            data = JSON.parse(data);
+        }
 
 // })
 
