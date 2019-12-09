@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <link rel="stylesheet" href="style.css">
     <!-- The only way for the search bar to work I need to have these tags -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -27,61 +27,57 @@
                 </span>
             </div>
         </div>
-        <div id="index-banner" class="parallax-container">
-            <div class="section no-pad-bot mt75">
-                <div class="container">
-                    <div class="row">
-                        <div class="col s2">
-                            <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                        <div class="search-engine col s6">
-                            
-                                <input id="userSearch" type="text" name="searchEngine">
-                            
-                        </div>
-                        <div class="input-field col s4">
-                            <select>
-                                <option value="" disabled selected>Choose your option</option>
-                                <option value="1">Keyword</option>
-                                <option value="2">Title</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <form class="boxes">
-                            <div class="col s4">
-                                <div class="right-align">
-                                    <label>
-                                        <input class="check" type="checkbox" id="book-op" />
-                                        <span for="book-op">Book</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col s4">
-                                <div class="center-align">
-                                    <label>
-                                        <input class="check" type="checkbox" id="movie-op" />
-                                        <span for="movie-op">Movie</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col s4">
-                                <div class="left-align">
-                                    <label>
-                                        <input class="check" type="checkbox" id="game-op" />
+        <div class="row">
+            <div class="col s2">
+                <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <div class="search-engine col s6">
 
-                                        <span for="game-op">Game</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </form>
+                <input id="userSearch" type="text" name="searchEngine">
+
+            </div>
+            <div class="input-field col s4">
+                <select>
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1">Keyword</option>
+                    <option value="2">Title</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <form class="boxes">
+                <div class="col s4">
+                    <div class="right-align">
+                        <label>
+                            <input class="check" type="checkbox" id="book-op">
+                            <span for="book-op">Book</span>
+                        </label>
                     </div>
                 </div>
-                <div class="parallax">
-                    <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
+                <div class="col s4">
+                    <div class="center-align">
+                        <label>
+                            <input class="check" type="checkbox" id="movie-op">
+                            <span for="movie-op">Movie</span>
+                        </label>
+                    </div>
                 </div>
+                <div class="col s4">
+                    <div class="left-align">
+                        <label>
+                            <input class="check" type="checkbox" id="game-op">
+
+                            <span for="game-op">Game</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="index-banner" class="parallax-container">
+            <div class="parallax">
+                <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
             </div>
         </div>
         <div class="row results">
@@ -89,8 +85,6 @@
             <div class="col s12" id="bookContent"></div>
             <div class="col s12" id="gameContent"></div>
         </div>
-
-
         <footer class="page-footer grey darken-3">
             <div class="footer-copyright">
                 <p>
