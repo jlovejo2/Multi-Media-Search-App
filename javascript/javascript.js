@@ -6,6 +6,8 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
+    $('.collapsible').collapsible();
+
     // var director = "JJ Abrams";
     // var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
 
@@ -18,6 +20,7 @@ $(document).ready(function () {
     //     console.log(response);
 
     // });
+
 
 
     //_____________________________________________
@@ -83,24 +86,24 @@ $(document).ready(function () {
 
                 //this if statement is looking for the book checkbox to be checked
                 if ($("#book-op")[0].checked === true) {
-                    addTitleBorder($("#bookContent"),"Books")
+                    //addTitleBorder($("#bookContent"),"Books")
                     googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
                 }
                 //this if statement is looking for the movie checkbox to be checked
                 if ($("#movie-op")[0].checked === true) {
-                    addTitleBorder($("#movieContent"),"Movies");
+                    //addTitleBorder($("#movieContent"),"Movies");
                     OMDBKeywordQuery($("#userSearch").val(), OMDBApiKey);
                 }
                 //this if statement is looking for the game checkbox to be checked
                 if ($("#game-op")[0].checked === true) {
-                    addTitleBorder($("#gameContent"),"Games")
+                    //addTitleBorder($("#gameContent"),"Games")
                     rawgQuery($("#userSearch").val());
                 }
                 //this if statement runs if Title is selected in the pulldown menu
             } else if ($(".select-dropdown").val() === "Title") {
 
                 if ($("#movie-op")[0].checked === true) {
-                    addTitleBorder($("#movieContent"),"Movies")
+                    //addTitleBorder($("#movieContent"),"Movies")
                     OMDBTitleQuery($("#userSearch").val(), OMDBApiKey);
                 }
 
@@ -248,6 +251,13 @@ function OMDBTitleQuery(movie, apiKey) {
             var movieMain = $("<div>");
             movieMain.addClass("movie");
 
+            //poster 
+
+            var imgUrl = response.Poster;
+            var image = $("<img>").attr("src", imgUrl);
+            movieMain.append(image);
+
+
             //rating
             var rating = response.Rated;
             var pRating = $("<p>");
@@ -266,11 +276,6 @@ function OMDBTitleQuery(movie, apiKey) {
             pPlot.text("Plot: " + plot);
             movieMain.append(pPlot);
 
-            //poster 
-
-            var imgUrl = response.Poster;
-            var image = $("<img>").attr("src", imgUrl);
-            movieMain.append(image);
 
             $("#movieContent").append(movieMain);
 
@@ -426,9 +431,10 @@ function noResultsFound(mainDiv) {
 
 function addTitleBorder (mainDiv, headerText ) {
     var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
-    rowDiv.append($("<h2>").text(headerText));
+    //rowDiv.append($("<h2>").text(headerText));
     mainDiv.append(rowDiv);
-    mainDiv.attr("style","border: 3px solid black");
+    //mainDiv.attr("style","border: 3px solid black");
+    
 }
 
 
