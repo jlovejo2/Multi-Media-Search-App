@@ -68,8 +68,8 @@ $(document).ready(function () {
 
                 //this if statement is looking for the book checkbox to be checked
                 if ($("#book-op")[0].checked === true) {
-
-                    googleBooksQuery($("#userSearch").val(), googleBooksApiKey);
+                    
+                    googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
                 }
                 //this if statement is looking for the movie checkbox to be checked
                 if ($("#movie-op")[0].checked === true) {
@@ -90,8 +90,12 @@ $(document).ready(function () {
                     OMDBTitleQuery($("#userSearch").val(), OMDBApiKey);
                 }
 
+                if ($("#book-op")[0].checked === true) {
+                    
+                    googleBooksTitleQuery($("#userSearch").val(), googleBooksApiKey);
+                }
 
-                //Since the other two conditions in the pulldown menu are code this else refers to if nothing has been selected in the menu.
+            //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu.
             } else {
                 var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
                 var modalContentDiv = $("<div>").attr("class", "modal-content");
@@ -152,7 +156,24 @@ function genAuthorList(mainDiv, column, listDiv, respObject) {
     });
 }
 
-function googleBooksQuery(searchCriteria, apiKey) {
+function googleBooksTitleQuery (searchCriteria, apiKey) {
+
+    
+    var titleURL = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "intitle:" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
+
+    googleBooksQuery(titleURL);
+
+}
+
+function googleBooksKeywordQuery (searchCriteria, apiKey) {
+
+    var keywordURL = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
+
+    googleBooksQuery(keywordURL);
+
+}
+
+function googleBooksQuery(googleBooksURL) {
 
     console.log(1);
     //__________________________________________________
@@ -169,10 +190,8 @@ function googleBooksQuery(searchCriteria, apiKey) {
     var printType = "books";
 
 
-    var queryGoogleBooks = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
-
     $.ajax({
-        url: queryGoogleBooks,
+        url: googleBooksURL,
         method: "GET"
     }).then(function (respGoogleBooks) {
         console.log(respGoogleBooks);
@@ -195,11 +214,11 @@ function googleBooksQuery(searchCriteria, apiKey) {
                 var authorList = $("<ul>").attr("class", "row");
 
                 //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-                rowDiv1.append(colDiv1.append($("<h5>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
-                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
-                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
+                rowDiv1.append(colDiv1.append($("<h6>").attr("class", "flow-text").text("Title: " + respGoogleBooks.items[index].volumeInfo.title)));
+                rowDiv1.append(colDiv1.append($("<p>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
+                rowDiv1.append(colDiv1.append($("<p>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
                 //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-                // rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
                 // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
                 genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
 
@@ -211,6 +230,8 @@ function googleBooksQuery(searchCriteria, apiKey) {
                 rowDiv1 = $("<div>").attr("class", "row");
                 countRowDiv1 = 0;
             }
+
+            $("#bookContent").append(rowDiv1);
         })
     });
 };
@@ -280,7 +301,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
             console.log(respKeywordMovie.Search[index].Year);
             console.log(respKeywordMovie.Search[index].Poster);
 
-            if (countRowDiv3 < 4) {
+            if (countRowDiv3 < 3) {
                 console.log(countRowDiv3);
                 var colDiv3 = $("<div>").attr("class", "col s12 m6 l4");
 
@@ -298,13 +319,15 @@ function OMDBKeywordQuery(keyword, apiKey) {
                 countRowDiv3 = 0;
 
              }
+            //This line of code is necessary to render the rowDiv3 if the number of indexes in the response object is not evenly divided by 3
+             $("#movieContent").append(rowDiv3);
 
         })
     })
     
 }
 
-    function rawgQuery(searchCriteria) {
+function rawgQuery(searchCriteria) {
         //__________________________________________________
         //___________Begin Code for Game Api (Rawg)_________
         //__________________________________________________
@@ -348,7 +371,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
                 }
             });
         });
-    }
+}
 
 
 
