@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <link rel="stylesheet" href="style.css">
     <!-- The only way for the search bar to work I need to have these tags -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -16,79 +15,97 @@
 </head>
 
 <body>
-        <div class="container">
-                <div class="row heading">
-                        <div class="card-panel blue lighten-3">
-                            <span class="grey-text grey lighten-5 center">
-                        <head>
-                            <h1>Sauce Control</h1>
-                        </head>
-                            </span>
-                        </div>
-                </div>
-                <div id="index-banner" class="parallax-container">
-                    <div class="section no-pad-bot mt75">
-                    <div class="container">
-                    <br><br>
-                    
-                <div class="row">
-      
-                    <div class="search-engine">
-                        <div class="col s6">
-                              <form>
-                                  <input type="text" name="searchEngine">
-                              </form>
-                        </div>
-                        <div class="input-field col s4">
-                                <select>
-                                  <option value="" disabled selected>Choose your option</option>
-                                  <option value="1">Keyword</option>
-                                  <option value="2">Title</option>
-                                </select>
-                        </div>
-                    </div>
-                </div>  
-        <form class="boxes">
-                <div class="row">
-                    <div class="col s4">
-                        <div class="right-align">
-                            <label>
-                             <input class="check" type="checkbox" id="book-op" />
-                             <span for="book-op">Book</span>
-                             </label>
-                        </div>
-                    </div>
-                    <div class="col s4">
-                        <div class="center-align">
-                                <label>
-                                     <input class="check" type="checkbox" id="movie-op" />
-                                     <span for="movie-op">Movie</span>
-                                </label>
-                        </div>
-                    </div>
-                    <div class="col s4">
-                        <div class="left-align">
-                             <label>
-                                <input class="check" type="checkbox" id="game-op"/>
+    <div class="container" id="fullPageContainer">
+        <div class="row heading">
+            <div class="card-panel blue lighten-3">
+                <span class="grey-text grey lighten-5 center">
 
-                                <span for="game-op">Game</span>
-                            </label>
-                        </div>
+                    <head>
+                        <h1>Sauce Control</h1>
+                    </head>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+                <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <div class="search-engine col s6">
+
+                <input id="userSearch" type="text" name="searchEngine">
+
+            </div>
+            <div class="input-field col s4">
+                <select>
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1">Keyword</option>
+                    <option value="2">Title</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <form class="boxes">
+                <div class="col s4">
+                    <div class="right-align">
+                        <label>
+                            <input class="check" type="checkbox" id="book-op">
+                            <span for="book-op">Book</span>
+                        </label>
                     </div>
                 </div>
-        </form>
+                <div class="col s4">
+                    <div class="center-align">
+                        <label>
+                            <input class="check" type="checkbox" id="movie-op">
+                            <span for="movie-op">Movie</span>
+                        </label>
                     </div>
-        <div class="parallax">
-            <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
+                </div>
+                <div class="col s4">
+                    <div class="left-align">
+                        <label>
+                            <input class="check" type="checkbox" id="game-op">
+
+                            <span for="game-op">Game</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="index-banner" class="parallax-container">
+            <div class="parallax">
+                <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
+            </div>
         </div>
                     </div>
-                    </div>
-        <div class="row results">
-                <div class="col s12" id="movieContent"></div>
-                <div class="col s12" id="bookContent"></div>
-                <div class="col s12" id="gameContent"></div>
-            </div>
-          
+                        </div>
+
+            <!--collapsible divs, results appear here-->
+                <ul class="collapsible" data-collapsible = "expandable">
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
+                          <div class="collapsible-body"><span>
+                                <div class="col s12" id="movieContent"></div>
+                          </span></div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">book</i>Books</div>
+                          <div class="collapsible-body"><span>
+                                <div class="col s12" id="bookContent"></div>
+                          </span></div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">videogame_asset</i>Games</div>
+                          <div class="collapsible-body"><span>
+                                <div class="col s12" id="gameContent"></div>
+                          </span></div>
+                        </li>
+                      </ul>
+        </div>
+    
+      
             <footer class="page-footer grey darken-3">
                 <div class="footer-copyright">
                     <p>
@@ -98,8 +115,6 @@
             </footer>
       
     </div>
-    
     <script src="javascript/javascript.js"></script>
 </body>
-
 </html>
