@@ -25,6 +25,7 @@ $(document).ready(function () {
     //_____________________________________________
     //      Add materialize code above this line
     //____________________________________________
+
     var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
     var OMDBApiKey = "trilogy";
     // var rawgApiKey = ;
@@ -35,7 +36,6 @@ $(document).ready(function () {
 
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
-
 
         //search criteria investigation
         // console.log($("body"))
@@ -48,9 +48,9 @@ $(document).ready(function () {
         if (event.target.id === "userSearchButton") {
 
             // event.preventDefault();
-
-
+            //This line of code is necessary because if a user triggers both modals then the a hidden style is automatically added to it and it will conflict with function of the site
             $("body").removeAttr("style");
+            //These lines of code clear the page of previously rendered content
             $("#mainModalDiv").empty();
             $("#movieContent").empty();
             $("#movieContent").removeAttr("style");
@@ -59,6 +59,7 @@ $(document).ready(function () {
             $("#bookContent").empty();
             $("#bookContent").removeAttr("style");
 
+            
             if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false) {
 
                 var modalDiv = $("<div>").attr({ "class": "modal", "id": "checkboxModal" });
@@ -298,7 +299,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
         var countRowDiv3 = 0;
         var rowDiv3 = $("<div>").attr("class", "row");
 
-        if (response.Error === "Movie not found!") {
+        if (respKeywordMovie.Error === "Movie not found!") {
             noResultsFound($("#movieContent"));
         }
 
@@ -429,10 +430,10 @@ function noResultsFound(mainDiv) {
 }
 
 function addTitleBorder (mainDiv, headerText ) {
-    var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
+    // var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
     //rowDiv.append($("<h2>").text(headerText));
-    mainDiv.append(rowDiv);
-    //mainDiv.attr("style","border: 3px solid black");
+    // mainDiv.append(rowDiv);
+    // mainDiv.attr("style","border: 3px solid black");
     
 }
 
