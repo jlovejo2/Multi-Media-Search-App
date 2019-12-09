@@ -6,18 +6,18 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
-    var director = "JJ Abrams";
-    var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
+    // var director = "JJ Abrams";
+    // var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
 
-    //AJAX call
-    $.ajax({
-        url: directorURL,
-        method: "GET"
-    }).then(function (response) {
+    // //AJAX call
+    // $.ajax({
+    //     url: directorURL,
+    //     method: "GET"
+    // }).then(function (response) {
 
-        console.log(response);
+    //     console.log(response);
 
-    });
+    // });
 
 
     //_____________________________________________
@@ -51,8 +51,11 @@ $(document).ready(function () {
             $("body").removeAttr("style");
             $("#mainModalDiv").empty();
             $("#movieContent").empty();
-            $("gameContent").empty();
+            $("#movieContent").removeAttr("style");
+            $("#gameContent").empty();
+            $("#gameContent").removeAttr("style");
             $("#bookContent").empty();
+            $("#bookContent").removeAttr("style");
 
             if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false) {
 
@@ -80,35 +83,34 @@ $(document).ready(function () {
 
                 //this if statement is looking for the book checkbox to be checked
                 if ($("#book-op")[0].checked === true) {
-
+                    addTitleBorder($("#bookContent"),"Books")
                     googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
                 }
                 //this if statement is looking for the movie checkbox to be checked
                 if ($("#movie-op")[0].checked === true) {
-
+                    addTitleBorder($("#movieContent"),"Movies");
                     OMDBKeywordQuery($("#userSearch").val(), OMDBApiKey);
-
                 }
                 //this if statement is looking for the game checkbox to be checked
                 if ($("#game-op")[0].checked === true) {
-
+                    addTitleBorder($("#gameContent"),"Games")
                     rawgQuery($("#userSearch").val());
                 }
                 //this if statement runs if Title is selected in the pulldown menu
             } else if ($(".select-dropdown").val() === "Title") {
 
                 if ($("#movie-op")[0].checked === true) {
-
+                    addTitleBorder($("#movieContent"),"Movies")
                     OMDBTitleQuery($("#userSearch").val(), OMDBApiKey);
                 }
 
                 if ($("#book-op")[0].checked === true) {
-
+                    addTitleBorder($("#bookContent"),"Books")
                     googleBooksTitleQuery($("#userSearch").val(), googleBooksApiKey);
                 }
 
                 if ($("#game-op")[0].checked === true) {
-
+                    addTitleBorder($("#gameContent"),"Games")
                     rawgQuery($("#userSearch").val());
                 }
 
@@ -420,6 +422,13 @@ function noResultsFound(mainDiv) {
 
     mainDiv.append(rowDiv.append($("<h1>").text("No Results Found")));
 
+}
+
+function addTitleBorder (mainDiv, headerText ) {
+    var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
+    rowDiv.append($("<h2>").text(headerText));
+    mainDiv.append(rowDiv);
+    mainDiv.attr("style","border: 3px solid black");
 }
 
 
