@@ -6,6 +6,18 @@ $(document).ready(function () {
 
     $('.parallax').parallax();
 
+    var director = "JJ Abrams";
+    var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
+
+    //AJAX call
+    $.ajax({
+        url: directorURL,
+        method: "GET"
+    }).then(function (response) {
+
+        console.log(response);
+
+    });
 
 
     //_____________________________________________
@@ -68,7 +80,7 @@ $(document).ready(function () {
 
                 //this if statement is looking for the book checkbox to be checked
                 if ($("#book-op")[0].checked === true) {
-                    
+
                     googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
                 }
                 //this if statement is looking for the movie checkbox to be checked
@@ -91,11 +103,16 @@ $(document).ready(function () {
                 }
 
                 if ($("#book-op")[0].checked === true) {
-                    
+
                     googleBooksTitleQuery($("#userSearch").val(), googleBooksApiKey);
                 }
 
-            //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu.
+                if ($("#game-op")[0].checked === true) {
+
+                    rawgQuery($("#userSearch").val());
+                }
+
+                //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu.
             } else {
                 var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
                 var modalContentDiv = $("<div>").attr("class", "modal-content");
@@ -123,49 +140,16 @@ $(document).ready(function () {
 //                      Functions below this line
 //___________________________________________________________________________________
 
-//This function grabs the game name and image from the Rawg Api and appends it into a column div and then appends that column into the mainDiv parameter
-function genTitleImgFromQuery(mainDiv, column, name, img) {
+function googleBooksTitleQuery(searchCriteria, apiKey) {
 
-    //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
-    mainDiv.append(column.append($("<h5>").attr("class", "flow-text").text("Name: " + name)));
-    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-    mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Image" })));
 
-}
-
-//This function grabs the genre object from the Rawg Api and places the info into a list which is appended into a column.  That column is then appened to the mainDiv parameter
-function genGenreList(mainDiv, column, listDiv, respObject) {
-
-    //function that runs for every index of the genre array to grab the name and place it into an li item.
-    $.each(respObject.genres, function (index) {
-
-        listDiv.append($("<li>").text(respObject.genres[index].name))
-        mainDiv.append(column.append(listDiv));
-
-    });
-
-}
-
-function genAuthorList(mainDiv, column, listDiv, respObject) {
-    //function that runs for every index of the genre array to grab the name and place it into an li item.
-    $.each(respObject.authors, function (index) {
-
-        listDiv.append($("<li>").text(respObject.authors[index]));
-        mainDiv.append(column.append(listDiv));
-
-    });
-}
-
-function googleBooksTitleQuery (searchCriteria, apiKey) {
-
-    
     var titleURL = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "intitle:" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
 
     googleBooksQuery(titleURL);
 
 }
 
-function googleBooksKeywordQuery (searchCriteria, apiKey) {
+function googleBooksKeywordQuery(searchCriteria, apiKey) {
 
     var keywordURL = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
 
@@ -198,6 +182,11 @@ function googleBooksQuery(googleBooksURL) {
 
         var countRowDiv1 = 0;
         var rowDiv1 = $("<div>").attr("class", "row");
+
+
+        if (respGoogleBooks.totalItems === 0) {
+            noResultsFound($("#bookContent"));
+        }
 
         $.each(respGoogleBooks.items, function (index) {
 
@@ -232,6 +221,7 @@ function googleBooksQuery(googleBooksURL) {
             }
 
             $("#bookContent").append(rowDiv1);
+
         })
     });
 };
@@ -246,35 +236,43 @@ function OMDBTitleQuery(movie, apiKey) {
         url: titleURL,
         method: "GET"
     }).then(function (response) {
-        var movieMain = $("<div>");
-        movieMain.addClass("movie");
 
-        //rating
+        console.log(response);
 
-        var rating = response.Rated;
-        var pRating = $("<p>");
-        pRating.text("Rating: " + rating);
-        movieMain.append(pRating);
+        if (response.Error === "Movie not found!") {
+            noResultsFound($("#movieContent"));
+        } else {
 
-        //release
-        var dateRelease = response.Released;
-        var pRelease = $("<p>");
-        pRelease.text("Released: " + dateRelease);
-        movieMain.append(pRelease);
+            var movieMain = $("<div>");
+            movieMain.addClass("movie");
 
-        //plot 
-        var plot = response.Plot;
-        var pPlot = $("<p>");
-        pPlot.text("Plot: " + plot);
-        movieMain.append(pPlot);
+            //rating
+            var rating = response.Rated;
+            var pRating = $("<p>");
+            pRating.text("Rating: " + rating);
+            movieMain.append(pRating);
 
-        //poster 
+            //release
+            var dateRelease = response.Released;
+            var pRelease = $("<p>");
+            pRelease.text("Released: " + dateRelease);
+            movieMain.append(pRelease);
 
-        var imgUrl = response.Poster;
-        var image = $("<img>").attr("src", imgUrl);
-        movieMain.append(image);
+            //plot 
+            var plot = response.Plot;
+            var pPlot = $("<p>");
+            pPlot.text("Plot: " + plot);
+            movieMain.append(pPlot);
 
-        $("#movieContent").append(movieMain);
+            //poster 
+
+            var imgUrl = response.Poster;
+            var image = $("<img>").attr("src", imgUrl);
+            movieMain.append(image);
+
+            $("#movieContent").append(movieMain);
+
+        }
 
     });
 
@@ -289,12 +287,16 @@ function OMDBKeywordQuery(keyword, apiKey) {
         url: keywordURL,
         method: "GET"
     }).then(function (respKeywordMovie) {
-        console.log (respKeywordMovie);
+        console.log(respKeywordMovie);
 
         var countRowDiv3 = 0;
         var rowDiv3 = $("<div>").attr("class", "row");
 
-        $.each (respKeywordMovie.Search, function (index) {
+        if (response.Error === "Movie not found!") {
+            noResultsFound($("#movieContent"));
+        }
+
+        $.each(respKeywordMovie.Search, function (index) {
 
             console.log(respKeywordMovie.Search[index].Title);
             console.log(respKeywordMovie.Search[index].Type);
@@ -305,74 +307,120 @@ function OMDBKeywordQuery(keyword, apiKey) {
                 console.log(countRowDiv3);
                 var colDiv3 = $("<div>").attr("class", "col s12 m6 l4");
 
-                rowDiv3.append(colDiv3.append($("<p>").text("Title: " + respKeywordMovie.Search[index].Title )));
+                rowDiv3.append(colDiv3.append($("<p>").text("Title: " + respKeywordMovie.Search[index].Title)));
                 rowDiv3.append(colDiv3.append($("<p>").text("Type: " + respKeywordMovie.Search[index].Type)));
                 rowDiv3.append(colDiv3.append($("<p>").text("Release year: " + respKeywordMovie.Search[index].Year)));
-                rowDiv3.append(colDiv3.append($("<img>").attr({"src": respKeywordMovie.Search[index].Poster, "alt": "Movie Poster"})));
+                rowDiv3.append(colDiv3.append($("<img>").attr({ "src": respKeywordMovie.Search[index].Poster, "alt": "Movie Poster" })));
 
                 countRowDiv3++;
 
-             } else {
+            } else {
 
                 $("#movieContent").append(rowDiv3);
                 rowDiv3 = $("<div>").attr("class", "row");
                 countRowDiv3 = 0;
 
-             }
+            }
             //This line of code is necessary to render the rowDiv3 if the number of indexes in the response object is not evenly divided by 3
-             $("#movieContent").append(rowDiv3);
+            $("#movieContent").append(rowDiv3);
 
         })
     })
-    
+
 }
 
 function rawgQuery(searchCriteria) {
-        //__________________________________________________
-        //___________Begin Code for Game Api (Rawg)_________
-        //__________________________________________________
-        var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
+    //__________________________________________________
+    //___________Begin Code for Game Api (Rawg)_________
+    //__________________________________________________
+    var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
 
-        //code for the ajax query call to the Rawg api
-        $.ajax({
-            url: queryRawg,
-            method: "GET"
-        }).then(function (respRawg) {
-            console.log(respRawg);
+    //code for the ajax query call to the Rawg api
+    $.ajax({
+        url: queryRawg,
+        method: "GET"
+    }).then(function (respRawg) {
+        console.log(respRawg);
 
-            //variable that is created in order to limit the number of columns placed into generated row div as 4
-            var countRowDiv2 = 0;
-            var rowDiv2 = $("<div>").attr("class", "row");
+        //variable that is created in order to limit the number of columns placed into generated row div as 4
+        var countRowDiv2 = 0;
+        var rowDiv2 = $("<div>").attr("class", "row");
 
-            //each function that runs for every index of the resp object returned by the ajax call to Rawg api
-            $.each(respRawg.results, function (index) {
+        if (respRawg.count === 0) {
+            noResultsFound($("#gameContent"));
+        }
 
-                //this if statement declares that the code will only run while count variable is less than 4.  
-                if (countRowDiv2 < 4) {
+        //each function that runs for every index of the resp object returned by the ajax call to Rawg api
+        $.each(respRawg.results, function (index) {
 
-                    var colDiv2 = $("<div>").attr("class", "col s3");
-                    var genreList = $("<ul>").text("genres: ");
+            //this if statement declares that the code will only run while count variable is less than 4.  
+            if (countRowDiv2 < 4) {
 
-                    //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
-                    genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
-                    //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
-                    genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
+                var colDiv2 = $("<div>").attr("class", "col s3");
+                var genreList = $("<ul>").text("genres: ");
 
-                    countRowDiv2++;
+                //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
+                genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
+                //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
+                genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
 
-                } else {
+                countRowDiv2++;
 
-                    //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
-                    $("#gameContent").append(rowDiv2);
-                    //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
-                    rowDiv2 = $("<div>").attr("class", "row");
-                    //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
-                    countRowDiv2 = 0;
-                }
-            });
+            } else {
+
+                //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
+                $("#gameContent").append(rowDiv2);
+                //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
+                rowDiv2 = $("<div>").attr("class", "row");
+                //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
+                countRowDiv2 = 0;
+            }
+
+            $("#gameContent").append(rowDiv2);
         });
+    });
 }
 
+//This function grabs the game name and image from the Rawg Api and appends it into a column div and then appends that column into the mainDiv parameter
+function genTitleImgFromQuery(mainDiv, column, name, img) {
+
+    //line of code grabs the gamecontent col div, creates a h1 tag in it, and then adds the title of the game from ajax resp object into it
+    mainDiv.append(column.append($("<h5>").attr("class", "flow-text").text("Name: " + name)));
+    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+    mainDiv.append(column.append($("<img>").attr({ "class": "responsive-img", "src": img, "alt": "Image" })));
+
+}
+
+//This function grabs the genre object from the Rawg Api and places the info into a list which is appended into a column.  That column is then appened to the mainDiv parameter
+function genGenreList(mainDiv, column, listDiv, respObject) {
+
+    //function that runs for every index of the genre array to grab the name and place it into an li item.
+    $.each(respObject.genres, function (index) {
+
+        listDiv.append($("<li>").text(respObject.genres[index].name))
+        mainDiv.append(column.append(listDiv));
+
+    });
+
+}
+
+function genAuthorList(mainDiv, column, listDiv, respObject) {
+    //function that runs for every index of the genre array to grab the name and place it into an li item.
+    $.each(respObject.authors, function (index) {
+
+        listDiv.append($("<li>").text(respObject.authors[index]));
+        mainDiv.append(column.append(listDiv));
+
+    });
+}
+
+function noResultsFound(mainDiv) {
+
+    var rowDiv = $("<div>").attr("class", "row flow-text");
+
+    mainDiv.append(rowDiv.append($("<h1>").text("No Results Found")));
+
+}
 
 
 
