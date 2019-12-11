@@ -8,19 +8,7 @@ $(document).ready(function () {
 
     $('.collapsible').collapsible();
 
-    // var director = "JJ Abrams";
-    // var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
-
-    // //AJAX call
-    // $.ajax({
-    //     url: directorURL,
-    //     method: "GET"
-    // }).then(function (response) {
-
-    //     console.log(response);
-
-    // });
-
+    init();
 
     //_____________________________________________
     //      Add materialize code above this line
@@ -31,12 +19,16 @@ $(document).ready(function () {
     // var rawgApiKey = ;
     var fullContainer = $("#fullPageContainer");
     var mainModalDiv = $("<div>").attr({ "id": "mainModalDiv", "class": "row" });
+    var userSearchObject = [];
+    var userSearchList = $("<ul>").addClass("searchList");
 
     fullContainer.append(mainModalDiv);
+    $("#searchDiv").append(userSearchList);
 
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
 
+    
 
         //search criteria investigation
         // console.log($("body"))
@@ -49,7 +41,7 @@ $(document).ready(function () {
         if (event.target.id === "userSearchButton") {
 
             // event.preventDefault();
-            //This line of code is necessary because if a user triggers both modals then the a hidden style is automatically added to it and it will conflict with function of the site
+            //This line of code is necessary because if a user triggers both modals then a hidden style is automatically added to it and it will conflict with function of the site
             $("body").removeAttr("style");
 
             //These lines of code clear the page of previously rendered content when search button is clicked.
@@ -60,6 +52,8 @@ $(document).ready(function () {
             $("#gameContent").removeAttr("style");
             $("#bookContent").empty();
             $("#bookContent").removeAttr("style");
+
+            saveUserInput( $("#userSearch").val(), $(".select-dropdown").val(), $("#book-op")[0].checked, $("#movie-op")[0].checked, $("#game-op")[0].checked);
 
             //this if statement is run when none of the checkboxes are checked.  The code inside generates a modal to the html and then opens it.
             if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false) {
@@ -102,6 +96,7 @@ $(document).ready(function () {
                     
                     rawgKeywordQuery($("#userSearch").val());
                 }
+                renderSearchButtons(userSearchObject);
                 //this if statement runs the code within if Title is selected in the dropdown menu
             } else if ($(".select-dropdown").val() === "Title") {
 
@@ -119,7 +114,7 @@ $(document).ready(function () {
                     
                     rawgTitleQuery($("#userSearch").val());
                 }
-
+                renderSearchButtons(userSearchObject);
              //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu. The code withing renders a modal to the html and opens it.
             } else {
                 var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
@@ -141,13 +136,62 @@ $(document).ready(function () {
                 //this line of code grabs the modal div and opens it
                 $("#dropdownModal").modal('open');
             }
-
         }
     });
 
-});
+//___________________________________________________________________________________
 //                      Functions below this line
 //___________________________________________________________________________________
+
+//This function pulls the information from localStorage searchedCityNames array and generates the buttons for them.
+function init() {
+    //This line grabs the data from localStorage, parses it, and sets it as variable storedCities
+    var storedUserSearchData = JSON.parse(localStorage.getItem("userSearchObject"));
+
+    // If events weren't retrieved from localStorage, set the storedCities equal to searchedCityNames.
+    if (storedUserSearchData !== null) {
+        userSearchObject = storedUserSearchData;
+    }
+   
+}; // //this code executes renderSearchButtons function for each index value of storedCities object
+    // $.each(storedUserSearchData, function (value) {
+
+    //     renderSearchButtons(value);
+    // });
+
+//This function saves the user search data criteria to userSearchObject which is then saved to localStorage.
+function saveUserInput( userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck) {
+    
+    userSearchObject.push({ "searchText": userSearchValue, "DropDownChoice": dropDownOption, "books": bookCheck, "movies": movieCheck, "games": gameCheck });
+    
+    localStorage.setItem("userSearchObject", JSON.stringify(userSearchObject));
+};
+
+//Function that renders the search buttons and close button list under the search bar
+function renderSearchButtons(buttonTextContent) {
+
+    var userSearch = $("<button>").addClass("userSearchButton");
+    var closeButton = $("<button>").addClass("btn waves-effect");
+    var kn = "searchText"; 
+    
+   for (i=0, i < buttonTextContent.length, i++ ) {
+
+            if(buttonTextContent[key] === searchText){
+
+            }
+    }
+    });
+
+    console.log(buttonTextContent[0].searchText);
+    //this code takes the button created in variable above and puts city Name as text within that button.
+    //then that button is added as a list item to userSearchList unordered list tag. 
+    // console.log(buttonTextContent.keyname.titanic);
+    closeButton.text("X");
+    userSearch.text(searchString);
+    // console.log(Object.values(buttonTextContent.keyname));
+    userSearchList.prepend($("<li>").prepend(userSearch, closeButton));
+};
+
 //This function sets the query url for searching by title and then calls the googelbooksQuery function
 function googleBooksTitleQuery(searchCriteria, apiKey) {
 
@@ -157,6 +201,7 @@ function googleBooksTitleQuery(searchCriteria, apiKey) {
     googleBooksQuery(titleURL);
 
 }
+
 //This function sets the query url for searching by keyword and then calls the googelbooksQuery function
 function googleBooksKeywordQuery(searchCriteria, apiKey) {
 
@@ -165,6 +210,7 @@ function googleBooksKeywordQuery(searchCriteria, apiKey) {
     googleBooksQuery(keywordURL);
 
 }
+
 //this function is set to run an ajax query to googlebooks api.  The parameter delivered for the function is the query url.
 function googleBooksQuery(googleBooksURL) {
 
@@ -345,6 +391,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
     })
 
 }
+
 //This function performs the AJAX query to the Rawg (video Game) API based on the results including the user search value in the title
 function rawgKeywordQuery(searchCriteria) {
     //__________________________________________________
@@ -402,10 +449,9 @@ function rawgKeywordQuery(searchCriteria) {
                 countRowDiv2 = 0;
             }
 
-            console.log(divDontWant);
             $("#gameContent").append(rowDiv2);
             divDontWant.empty();
-            console.log(divDontWant);
+           
         });
     });
 }
@@ -543,16 +589,11 @@ function CapitalizeWords(string) {
     word1 = capitalizedString.trim();
     return word1;
 }
-//This functions has not been written yet.
+
+});
+//This function has not been written yet.
 function lowercaseWords() { }
 
-//This function will add a header with specified text and border to the the main div parameter.
-function addTitleBorder(mainDiv, headerText) {
-    // var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
-    //rowDiv.append($("<h2>").text(headerText));
-    // mainDiv.append(rowDiv);
-    // mainDiv.attr("style","border: 3px solid black");
-}
 
 
 
