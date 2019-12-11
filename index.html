@@ -92,21 +92,39 @@
         <!--collapsible divs, results appear here-->
         <ul class="collapsible expandable" data-collapsible="">
             <li>
-                <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
+                <div class="collapsible-header">
+                    <i class="material-icons">movie</i>
+                    Movies 
+                    <span class="badge" id="MovieCount">
+                    </span>
+                </div>
+                
                 <div class="collapsible-body"><span>
                         <div class="col s12" id="movieContent"></div>
                     </span>
                 </div>
             </li>
             <li>
-                <div class="collapsible-header"><i class="material-icons">book</i>Books</div>
+                <div class="collapsible-header">
+                    <i class="material-icons">book</i>
+                    Books
+                    <span class="badge" id="BookCount">
+                        
+                    </span>
+                </div>
                 <div class="collapsible-body"><span>
                         <div class="col s12" id="bookContent"></div>
                     </span></div>
             </li>
             <li>
-                <div class="collapsible-header"><i class="material-icons">videogame_asset</i>Games</div>
-                <div class="collapsible-body"><span>
+                <div class="collapsible-header">
+                    <i class="material-icons">videogame_asset</i>
+                    Games
+                    <span class="badge" id="GameCount"></span>
+                </div>
+
+                <div class="collapsible-body">
+                    <span>
                         <div class="col s12" id="gameContent"></div>
                     </span></div>
             </li>
