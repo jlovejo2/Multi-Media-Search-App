@@ -8,12 +8,14 @@ $(document).ready(function () {
 
     $('.collapsible').collapsible();
 
+
     //this code below keeps more than one collapsible div open at a time
 
     var elem = document.querySelector('.collapsible.expandable');
     var instance = M.Collapsible.init(elem, {
         accordion: false
     });
+
 
     
     // var director = "JJ Abrams";
