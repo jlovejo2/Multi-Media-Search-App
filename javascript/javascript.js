@@ -8,6 +8,8 @@ $(document).ready(function () {
 
     $('.collapsible').collapsible();
 
+
+    
     // var director = "JJ Abrams";
     // var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
 

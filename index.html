@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Media Buffet</title>
     <link rel="stylesheet" href="style.css">
     <!-- The only way for the search bar to work I need to have these tags -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,33 +18,34 @@
 <body>
     <div class="container" id="fullPageContainer">
         <div class="row heading">
-            <div class="card-panel blue lighten-3">
-                <span class="grey-text grey lighten-5 center">
+            <div class="card-panel teal lighten-2">
+                <span class="white-text center">
 
                     <head>
-                        <h1>Sauce Control</h1>
+                        <h1>Media Buffet</h1>
                     </head>
                 </span>
             </div>
         </div>
-        <div class="row">
-            <div class="col s2">
-                <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
+        <div class="row valign-wrapper" id="search">
+            
             <div class="search-engine col s6">
 
                 <input id="userSearch" type="text" name="searchEngine">
 
             </div>
-            <div class="input-field col s4">
+            <div class="input-field col s4" id="dropdown">
                 <select>
                     <option value="" disabled selected>Choose your option</option>
                     <option value="1">Keyword</option>
                     <option value="2">Title</option>
                 </select>
             </div>
+            <div class="col s2">
+                    <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
         </div>
         <div class="row">
             <form class="boxes">
@@ -79,42 +81,58 @@
                 <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
             </div>
         </div>
-                    </div>
-                        </div>
+    </div>
 
-            <!--collapsible divs, results appear here-->
-                <ul class="collapsible" data-collapsible = "expandable">
-                        <li>
-                          <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
-                          <div class="collapsible-body"><span>
-                                <div class="col s12" id="movieContent"></div>
-                          </span></div>
-                        </li>
-                        <li>
-                          <div class="collapsible-header"><i class="material-icons">book</i>Books</div>
-                          <div class="collapsible-body"><span>
-                                <div class="col s12" id="bookContent"></div>
-                          </span></div>
-                        </li>
-                        <li>
-                          <div class="collapsible-header"><i class="material-icons">videogame_asset</i>Games</div>
-                          <div class="collapsible-body"><span>
-                                <div class="col s12" id="gameContent"></div>
-                          </span></div>
-                        </li>
-                      </ul>
+    <!--collapsible divs, results appear here-->
+<div class="container">
+    <ul class="collapsible" data-collapsible="expandable">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
+            <div class="collapsible-body"><span>
+                    <div class="col s12" id="movieContent"></div>
+                </span></div>
+        </li>
+        <li>
+            <div class="collapsible-header hoverable"><i class="material-icons">book</i>Books</div>
+            <div class="collapsible-body"><span>
+                    <div class="col s12" id="bookContent"></div>
+                </span></div>
+        </li>
+        <li>
+            <div class="collapsible-header hoverable"><i class="material-icons">videogame_asset</i>Games</div>
+            <div class="collapsible-body"><span>
+                    <div class="col s12" id="gameContent"></div>
+                </span></div>
+        </li>
+    </ul>
+</div>
+
+
+    <footer class="page-footer grey darken-3">
+        <div class="container right-align">
+            <h5 class="white-text">API Sources</h5>
+            <ul>
+                <li><a class="grey-text text-lighten-3" href="http://www.omdbapi.com/" target="_blank">OMDB API</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://developers.google.com/books"
+                        target="_blank">Google Books API</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://rawg.io/apidocs" target="_blank">rawg.io API</a>
+                </li>
+            </ul>
         </div>
-    
-      
-            <footer class="page-footer grey darken-3">
-                <div class="footer-copyright">
-                    <p>
-                         Created by: Martin, Kobii, Iliana, Sergio , James  
-                    </p>
-                </div>
-            </footer>
-      
+        <div class="container center-align">
+            <p>
+                Created by: Martin, Kobii, Iliana, Sergio , James
+            </p>
+        </div>
+        <div class="footer-copyright grey darken-3" id="copyright">
+            <div class="container center-align">
+                © 2019 Copyright Text
+            </div>
+        </div>
+    </footer>
+
     </div>
     <script src="javascript/javascript.js"></script>
 </body>
+
 </html>
