@@ -16,25 +16,29 @@
 </head>
 
 <body>
-    <div class="container" id="fullPageContainer">
-        <div class="row heading">
-            <div class="card-panel teal lighten-2">
-                <span class="white-text center">
+    <!--Header Row-->
+    <div class="row heading">
+        <div class="card-panel teal lighten-2">
+            <span class="white-text center">
 
-                    <head>
-                        <h1>Media Buffet</h1>
-                    </head>
-                </span>
-            </div>
+                <head>
+                    <h1>Media Buffet</h1>
+                </head>
+            </span>
         </div>
+    </div>
+
+    <!--Beginning of materialize content container-->
+    <div class="container" id="fullPageContainer">
         <div class="row valign-wrapper" id="search">
-            
+            <!--User Search div-->
             <div class="search-engine col s6">
 
                 <input id="userSearch" type="text" name="searchEngine">
 
             </div>
             <div class="input-field col s4" id="dropdown">
+
                 <select>
                     <option value="" disabled selected>Choose your option</option>
                     <option value="1">Keyword</option>
@@ -42,11 +46,12 @@
                 </select>
             </div>
             <div class="col s2">
-                    <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
+                <button class="btn waves-effect waves-light" id="userSearchButton" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
         </div>
+        <!--Begin Row Div of Checkboxes-->
         <div class="row">
             <form class="boxes">
                 <div class="col s4">
@@ -76,62 +81,61 @@
                 </div>
             </form>
         </div>
+        <!--Parallax div that specifies range of parallax and background image to be displayed-->
         <div id="index-banner" class="parallax-container">
             <div class="parallax">
                 <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
             </div>
         </div>
+
+
+        <!--collapsible divs, results appear here-->
+        <ul class="collapsible expandable" data-collapsible="">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
+                <div class="collapsible-body"><span>
+                        <div class="col s12" id="movieContent"></div>
+                    </span>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">book</i>Books</div>
+                <div class="collapsible-body"><span>
+                        <div class="col s12" id="bookContent"></div>
+                    </span></div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">videogame_asset</i>Games</div>
+                <div class="collapsible-body"><span>
+                        <div class="col s12" id="gameContent"></div>
+                    </span></div>
+            </li>
+        </ul>
     </div>
-
-    <!--collapsible divs, results appear here-->
-<div class="container">
-    <ul class="collapsible" data-collapsible="expandable">
-        <li>
-            <div class="collapsible-header"><i class="material-icons">movie</i>Movies</div>
-            <div class="collapsible-body"><span>
-                    <div class="col s12" id="movieContent"></div>
-                </span></div>
-        </li>
-        <li>
-            <div class="collapsible-header hoverable"><i class="material-icons">book</i>Books</div>
-            <div class="collapsible-body"><span>
-                    <div class="col s12" id="bookContent"></div>
-                </span></div>
-        </li>
-        <li>
-            <div class="collapsible-header hoverable"><i class="material-icons">videogame_asset</i>Games</div>
-            <div class="collapsible-body"><span>
-                    <div class="col s12" id="gameContent"></div>
-                </span></div>
-        </li>
-    </ul>
-</div>
-
-
-    <footer class="page-footer grey darken-3">
-        <div class="container right-align">
-            <h5 class="white-text">API Sources</h5>
-            <ul>
-                <li><a class="grey-text text-lighten-3" href="http://www.omdbapi.com/" target="_blank">OMDB API</a></li>
-                <li><a class="grey-text text-lighten-3" href="https://developers.google.com/books"
-                        target="_blank">Google Books API</a></li>
-                <li><a class="grey-text text-lighten-3" href="https://rawg.io/apidocs" target="_blank">rawg.io API</a>
-                </li>
-            </ul>
-        </div>
-        <div class="container center-align">
-            <p>
-                Created by: Martin, Kobii, Iliana, Sergio , James
-            </p>
-        </div>
-        <div class="footer-copyright grey darken-3" id="copyright">
-            <div class="container center-align">
-                © 2019 Copyright Text
+        <footer class="page-footer grey darken-3">
+            <div class="container right-align">
+                <h5 class="white-text">API Sources</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="http://www.omdbapi.com/" target="_blank">OMDB API</a>
+                    </li>
+                    <li><a class="grey-text text-lighten-3" href="https://developers.google.com/books"
+                            target="_blank">Google Books API</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://rawg.io/apidocs" target="_blank">rawg.io
+                            API</a>
+                    </li>
+                </ul>
             </div>
-        </div>
-    </footer>
-
-    </div>
+            <div class="container center-align">
+                <p>
+                    Created by: Martin, Kobii, Iliana, Sergio , James
+                </p>
+            </div>
+            <div class="footer-copyright grey darken-3" id="copyright">
+                <div class="container center-align">
+                    © 2019 Copyright Text
+                </div>
+            </div>
+        </footer>
     <script src="javascript/javascript.js"></script>
 </body>
 
