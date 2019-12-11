@@ -46,6 +46,7 @@ $(document).ready(function () {
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
 
+
         //search criteria investigation
         // console.log($("body"))
         // console.log(event);
@@ -97,35 +98,35 @@ $(document).ready(function () {
 
                 //this if statement is looking for the book checkbox to be checked
                 if ($("#book-op")[0].checked === true) {
-                    //addTitleBorder($("#bookContent"),"Books")
+                    
                     googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
                 }
                 //this if statement is looking for the movie checkbox to be checked
                 if ($("#movie-op")[0].checked === true) {
-                    //addTitleBorder($("#movieContent"),"Movies");
+                   
                     OMDBKeywordQuery($("#userSearch").val(), OMDBApiKey);
                 }
                 //this if statement is looking for the game checkbox to be checked
                 if ($("#game-op")[0].checked === true) {
-                    //addTitleBorder($("#gameContent"),"Games")
-                    rawgQuery($("#userSearch").val());
+                    
+                    rawgKeywordQuery($("#userSearch").val());
                 }
-              //this if statement runs the code within if Title is selected in the dropdown menu
+                //this if statement runs the code within if Title is selected in the dropdown menu
             } else if ($(".select-dropdown").val() === "Title") {
-                
+
                 if ($("#movie-op")[0].checked === true) {
-                    //addTitleBorder($("#movieContent"),"Movies")
+                    
                     OMDBTitleQuery($("#userSearch").val(), OMDBApiKey);
                 }
 
                 if ($("#book-op")[0].checked === true) {
-                    // addTitleBorder($("#bookContent"),"Books")
+                    
                     googleBooksTitleQuery($("#userSearch").val(), googleBooksApiKey);
                 }
 
                 if ($("#game-op")[0].checked === true) {
-                    // addTitleBorder($("#gameContent"),"Games")
-                    rawgQuery($("#userSearch").val());
+                    
+                    rawgTitleQuery($("#userSearch").val());
                 }
 
              //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu. The code withing renders a modal to the html and opens it.
@@ -235,7 +236,7 @@ function googleBooksQuery(googleBooksURL) {
                 genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
 
                 countRowDiv1++;
-            //This else runs once the countRowDiv variable hits four.  
+                //This else runs once the countRowDiv variable hits four.  
             } else {
                 //line of code takes the rowDiv1 variable full of the rendered content from the first four indexes and appends it to the bookcontent div.
                 $("#bookContent").append(rowDiv1);
@@ -360,8 +361,8 @@ function OMDBKeywordQuery(keyword, apiKey) {
     })
 
 }
-//This function performs the AJAX query to the Rawg (video Game) API
-function rawgQuery(searchCriteria) {
+//This function performs the AJAX query to the Rawg (video Game) API based on the results including the user search value in the title
+function rawgKeywordQuery(searchCriteria) {
     //__________________________________________________
     //___________Begin Code for Game Api (Rawg)_________
     //__________________________________________________
@@ -374,9 +375,11 @@ function rawgQuery(searchCriteria) {
     }).then(function (respRawg) {
         console.log(respRawg);
 
+
         //variable that is created in order to limit the number of columns placed into generated row div as 4
         var countRowDiv2 = 0;
         var rowDiv2 = $("<div>").attr("class", "row");
+        var divDontWant = $("<div>")
 
         if (respRawg.count === 0) {
             noResultsFound($("#gameContent"));
@@ -386,8 +389,10 @@ function rawgQuery(searchCriteria) {
         //each function that runs for every index of the resp object returned by the ajax call to Rawg api
         $.each(respRawg.results, function (index) {
 
-            //this if statement declares that the code will only run while count variable is less than 4.  
-            if (countRowDiv2 < 4) {
+            //this if statement declares that the code will only run while count variable is less than 4. And it takes the response object and capitalizes the first letter of each word
+            //and sees if the user search criteria value is included in the name of that index of the response object.  This was created because the Rawg Api pulls back games that even have 
+            //parts of the searched value.  Example: "titanic" would bring backs games with the word "titan" in them  
+            if (countRowDiv2 < 4 && respRawg.results[index].name.includes(CapitalizeWords(searchCriteria)) === true) {
 
                 var colDiv2 = $("<div>").attr("class", "col s3");
                 var genreList = $("<ul>").text("genres: ");
@@ -399,6 +404,11 @@ function rawgQuery(searchCriteria) {
 
                 countRowDiv2++;
 
+            } else if (respRawg.results[index].name.includes(CapitalizeWords(searchCriteria)) === false) {
+    
+                //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
+                genTitleImgFromQuery(divDontWant, divDontWant, respRawg.results[index].name, respRawg.results[index].background_image);
+                               
             } else {
 
                 //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
@@ -409,7 +419,75 @@ function rawgQuery(searchCriteria) {
                 countRowDiv2 = 0;
             }
 
+            console.log(divDontWant);
             $("#gameContent").append(rowDiv2);
+            divDontWant.empty();
+            console.log(divDontWant);
+        });
+    });
+}
+
+//This function performs the AJAX query to the Rawg API with the title matching the user search value
+function rawgTitleQuery(searchCriteria) {
+    //__________________________________________________
+    //___________Begin Code for Game Api (Rawg)_________
+    //__________________________________________________
+    var queryRawg = "https://api.rawg.io/api/games?search=" + searchCriteria;
+
+    //code for the ajax query call to the Rawg api
+    $.ajax({
+        url: queryRawg,
+        method: "GET"
+    }).then(function (respRawg) {
+        console.log(respRawg);
+
+
+        //variable that is created in order to limit the number of columns placed into generated row div as 4
+        var countRowDiv2 = 0;
+        var rowDiv2 = $("<div>").attr("class", "row");
+        var divDontWant = $("<div>")
+
+        if (respRawg.count === 0) {
+            noResultsFound($("#gameContent"));
+        }
+
+        //each function that runs for every index of the resp object returned by the ajax call to Rawg api
+        $.each(respRawg.results, function (index) {
+
+            //this if statement declares that the code will only run while count variable is less than 4. And it takes the response object and capitalizes the first letter of each word
+            //and sees if the user search criteria value is included in the name of that index of the response object.  This was created because the Rawg Api pulls back games that even have 
+            //parts of the searched value.  Example: "titanic" would bring backs games with the word "titan" in them  
+            if (countRowDiv2 < 4 && respRawg.results[index].name === CapitalizeWords(searchCriteria)) {
+
+                var colDiv2 = $("<div>").attr("class", "col s3");
+                var genreList = $("<ul>").text("genres: ");
+
+                //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
+                genTitleImgFromQuery(rowDiv2, colDiv2, respRawg.results[index].name, respRawg.results[index].background_image);
+                //this line of code calls function that grabs genre object from Rawg Api and generates them into a list and writes it to div parameters
+                genGenreList(rowDiv2, colDiv2, genreList, respRawg.results[index]);
+
+                countRowDiv2++;
+
+            } else if (respRawg.results[index].name === CapitalizeWords(searchCriteria)) {
+    
+                //this line of code calls function that grabs the name & image from Rawg Api and generates it into div parameters
+                genTitleImgFromQuery(divDontWant, divDontWant, respRawg.results[index].name, respRawg.results[index].background_image);
+                               
+            } else {
+
+                //this code appends the rowDiv1 variable filled with the four cols append in above code to the page into the div with gameContent id 
+                $("#gameContent").append(rowDiv2);
+                //This line of code clears the rowDiv1 variable and sets it to an empty div with class row.
+                rowDiv2 = $("<div>").attr("class", "row");
+                //sets the count variable to 0 so that it we can go back up to the above if statement code and start generating cols in rows again
+                countRowDiv2 = 0;
+            }
+
+            console.log(divDontWant);
+            $("#gameContent").append(rowDiv2);
+            divDontWant.empty();
+            console.log(divDontWant);
         });
     });
 }
@@ -457,15 +535,43 @@ function noResultsFound(mainDiv) {
 
 }
 
+//This function is used because Rawg api capitalizes the first letters of all its game titles.  So the user search value is run through this function in the rawg query functions above
+//to see if it is included in the title
+function CapitalizeWords(string) {
+
+    // var numOfSpaces = 5;
+    var wordsArray = string.split(" ");
+
+    var capitalizedString = "";
+
+    wordsArray.forEach(function (index) {
+
+        var length = index.length;
+        var firstLetter = index.charAt(0);
+        var restOfWord = index.slice(1, length);
+
+        var capitalized = firstLetter.toUpperCase();
+        var capitalizedWord = capitalized + restOfWord;
+
+        capitalizedString = capitalizedString + " " + capitalizedWord;
+
+    })
+
+    word1 = capitalizedString.trim();
+    return word1;
+}
+
 });
 
-//This function will add a header with specified text and border to the the main div parameter. 
-function addTitleBorder (mainDiv, headerText ) {
+//This functions has not been written yet.
+function lowercaseWords() { }
+
+//This function will add a header with specified text and border to the the main div parameter.
+function addTitleBorder(mainDiv, headerText) {
     // var rowDiv = $("<div>").attr({"class": "row indigo-lighten-3","style":"border-bottom: 1px solid gray"});
     //rowDiv.append($("<h2>").text(headerText));
     // mainDiv.append(rowDiv);
     // mainDiv.attr("style","border: 3px solid black");
-    
 }
 
 
