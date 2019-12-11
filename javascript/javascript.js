@@ -324,8 +324,9 @@ function OMDBKeywordQuery(keyword, apiKey) {
         if (respKeywordMovie.Error === "Movie not found!") {
             noResultsFound($("#movieContent"));
         }
-        //this openes the collapsible div when the results are rendered
+        //this opens the collapsible div when the results are rendered
         instance.open(0);
+
 
         $.each(respKeywordMovie.Search, function (index) {
 
