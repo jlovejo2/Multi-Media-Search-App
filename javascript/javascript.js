@@ -8,6 +8,14 @@ $(document).ready(function () {
 
     $('.collapsible').collapsible();
 
+    //this code below keeps more than one collapsible div open at a time
+
+    var elem = document.querySelector('.collapsible.expandable');
+    var instance = M.Collapsible.init(elem, {
+        accordion: false
+    });
+
+    
     // var director = "JJ Abrams";
     // var directorURL = "http://www.omdbapi.com/?" + "apikey=" + "trilogy&";
 
@@ -145,7 +153,7 @@ $(document).ready(function () {
         }
     });
 
-});
+
 //                      Functions below this line
 //___________________________________________________________________________________
 //This function sets the query url for searching by title and then calls the googelbooksQuery function
@@ -187,6 +195,8 @@ function googleBooksQuery(googleBooksURL) {
         method: "GET"
     }).then(function (respGoogleBooks) {
         console.log(respGoogleBooks);
+        //this opens the collapsible div when results are rendered
+        instance.open(1);
 
         var countRowDiv1 = 0;
         var rowDiv1 = $("<div>").attr("class", "row");
@@ -253,6 +263,8 @@ function OMDBTitleQuery(movie, apiKey) {
     }).then(function (response) {
 
         console.log(response);
+        //this opens the collapsible div when the results are rendered
+        instance.open(0);
 
         if (response.Error === "Movie not found!") {
             noResultsFound($("#movieContent"));
@@ -312,6 +324,8 @@ function OMDBKeywordQuery(keyword, apiKey) {
         if (respKeywordMovie.Error === "Movie not found!") {
             noResultsFound($("#movieContent"));
         }
+        //this openes the collapsible div when the results are rendered
+        instance.open(0);
 
         $.each(respKeywordMovie.Search, function (index) {
 
@@ -367,6 +381,7 @@ function rawgQuery(searchCriteria) {
             noResultsFound($("#gameContent"));
         }
 
+        instance.open(2);
         //each function that runs for every index of the resp object returned by the ajax call to Rawg api
         $.each(respRawg.results, function (index) {
 
@@ -440,6 +455,8 @@ function noResultsFound(mainDiv) {
     mainDiv.append(rowDiv.append($("<h1>").text("No Results Found")));
 
 }
+
+});
 
 //This function will add a header with specified text and border to the the main div parameter. 
 function addTitleBorder (mainDiv, headerText ) {
