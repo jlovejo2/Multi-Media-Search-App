@@ -199,6 +199,8 @@ function googleBooksQuery(googleBooksURL) {
         //this opens the collapsible div when results are rendered
         instance.open(1);
 
+        $("#BookCount").text(respGoogleBooks.items.length);
+
         var countRowDiv1 = 0;
         var rowDiv1 = $("<div>").attr("class", "row");
 
@@ -231,7 +233,9 @@ function googleBooksQuery(googleBooksURL) {
                 //line of code creates a p tag, adds designated classes, and adds the published date of book into it
                 rowDiv1.append(colDiv1.append($("<p>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
                 //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+                if (respGoogleBooks.items[index].volumeInfo.imageLinks) {
                 rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                };
                 // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
                 genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
 
@@ -301,6 +305,8 @@ function OMDBTitleQuery(movie, apiKey) {
 
 
             $("#movieContent").append(movieMain);
+
+            $("#MovieCount").text(1)
 
         }
 
@@ -384,6 +390,8 @@ function rawgKeywordQuery(searchCriteria) {
         if (respRawg.count === 0) {
             noResultsFound($("#gameContent"));
         }
+
+        $("#GameCount").text(respRawg.count)
 
         instance.open(2);
         //each function that runs for every index of the resp object returned by the ajax call to Rawg api
