@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="style.css">
     <!-- The only way for the search bar to work I need to have these tags -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--Materialize CSS link-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Jquery Script Tag-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!--Materialize Jquery Script Tag-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
 </head>
 
 <body>
@@ -23,11 +25,12 @@
 
                 <head>
                     <h1>Media Buffet</h1>
+                    <p>Expand your interests!! Search for movies, books and games based on the same content.</p>
                 </head>
+                
             </span>
         </div>
     </div>
-
     <!--Beginning of materialize content container-->
     <div class="container" id="fullPageContainer">
         <div class="row valign-wrapper" id="search">
@@ -52,7 +55,7 @@
             </div>
         </div>
         <!--Begin Row Div of Checkboxes-->
-        <div class="row">
+        <div class="row" id="searchDiv">
             <form class="boxes">
                 <div class="col s4">
                     <div class="right-align">
@@ -87,18 +90,16 @@
                 <img src="https://miro.medium.com/max/5040/1*_slXClzgQVdZJQyqjm7iOQ.jpeg" alt="Movie Icon">
             </div>
         </div>
-
-
         <!--collapsible divs, results appear here-->
         <ul class="collapsible expandable" data-collapsible="">
             <li>
                 <div class="collapsible-header">
                     <i class="material-icons">movie</i>
-                    Movies 
+                    Movies
                     <span class="badge" id="MovieCount">
                     </span>
                 </div>
-                
+
                 <div class="collapsible-body"><span>
                         <div class="col s12" id="movieContent"></div>
                     </span>
@@ -109,7 +110,7 @@
                     <i class="material-icons">book</i>
                     Books
                     <span class="badge" id="BookCount">
-                        
+
                     </span>
                 </div>
                 <div class="collapsible-body"><span>
@@ -130,30 +131,30 @@
             </li>
         </ul>
     </div>
-        <footer class="page-footer grey darken-3">
-            <div class="container right-align">
-                <h5 class="white-text">API Sources</h5>
-                <ul>
-                    <li><a class="grey-text text-lighten-3" href="http://www.omdbapi.com/" target="_blank">OMDB API</a>
-                    </li>
-                    <li><a class="grey-text text-lighten-3" href="https://developers.google.com/books"
-                            target="_blank">Google Books API</a></li>
-                    <li><a class="grey-text text-lighten-3" href="https://rawg.io/apidocs" target="_blank">rawg.io
-                            API</a>
-                    </li>
-                </ul>
-            </div>
+    <footer class="page-footer grey darken-3">
+        <div class="container right-align">
+            <h5 class="white-text">API Sources</h5>
+            <ul>
+                <li><a class="grey-text text-lighten-3" href="http://www.omdbapi.com/" target="_blank">OMDB API</a>
+                </li>
+                <li><a class="grey-text text-lighten-3" href="https://developers.google.com/books"
+                        target="_blank">Google Books API</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://rawg.io/apidocs" target="_blank">rawg.io
+                        API</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container center-align">
+            <p>
+                Created by: Martin, Kobii, Iliana, Sergio , James
+            </p>
+        </div>
+        <div class="footer-copyright grey darken-3" id="copyright">
             <div class="container center-align">
-                <p>
-                    Created by: Martin, Kobii, Iliana, Sergio , James
-                </p>
+                © 2019 Copyright Text
             </div>
-            <div class="footer-copyright grey darken-3" id="copyright">
-                <div class="container center-align">
-                    © 2019 Copyright Text
-                </div>
-            </div>
-        </footer>
+        </div>
+    </footer>
     <script src="javascript/javascript.js"></script>
 </body>
 

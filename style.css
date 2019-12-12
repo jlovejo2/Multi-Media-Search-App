@@ -18,7 +18,11 @@ img {
     width: 90% !important;
 }
 
+.searchList {
+    /* display: inline; */
+    margin-top: 1px;
+}
+
 #copyright {
     padding-bottom: 30px;
 }
-
