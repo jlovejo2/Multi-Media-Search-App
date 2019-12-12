@@ -1,6 +1,6 @@
 # Media Buffet: A Multi Media Search Tool Application
-Version 1.0
-This is a website that can search movies, books, and video games to find like material.
+# Version 1.0
+Media Buffet is a website that can search movies, books, and video games to find like material.
 For example: Really enjoy the Thor movies? Want to learn what books and games are out there featuring the characters from Thor? Search by keyword Thor to get back multiple multi-media results based on the character Thor. 
 
 The User Interface:
