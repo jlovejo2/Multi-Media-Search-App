@@ -200,7 +200,7 @@ function googleBooksQuery(googleBooksURL) {
         console.log(respGoogleBooks);
         //this opens the collapsible div when results are rendered
         instance.open(1);
-
+        //badge count
         $("#BookCount").text(respGoogleBooks.items.length);
 
         var countRowDiv1 = 0;
@@ -308,6 +308,7 @@ function OMDBTitleQuery(movie, apiKey) {
 
             $("#movieContent").append(movieMain);
 
+            //badge count
             $("#MovieCount").text(1)
 
         }
@@ -335,6 +336,8 @@ function OMDBKeywordQuery(keyword, apiKey) {
         }
         //this opens the collapsible div when the results are rendered
         instance.open(0);
+
+        //badge count
         $("#MovieCount").text(respKeywordMovie.Search.length)
 
         $.each(respKeywordMovie.Search, function (index) {
@@ -394,6 +397,7 @@ function rawgKeywordQuery(searchCriteria) {
             noResultsFound($("#gameContent"));
         }
 
+        //badge on game div
         $("#GameCount").text(respRawg.count)
 
         instance.open(2);
