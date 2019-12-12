@@ -13,3 +13,8 @@ img {
 .container {
     width: 90% !important;
 }
+
+.searchList {
+    /* display: inline; */
+    margin-top: 1px;
+}

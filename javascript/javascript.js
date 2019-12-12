@@ -3,21 +3,16 @@ var userSearchObject = [];
 
 $(document).ready(function () {
 
-    $("select").formSelect();
-
-    $('.parallax').parallax();
-
-    $('.collapsible').collapsible();
-
+    //This is the initialization of page function.  It has some jquery essential for materialize CSS in it. 
+    //Also contains code for rendering search buttons from localStorage object
     init();
 
-    //_____________________________________________
+    //_______________________________________________________
     //      Add materialize code above this line
-    //____________________________________________
+    //______(Materialize Code added to init function)________
 
     var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
     var OMDBApiKey = "trilogy";
-    // var rawgApiKey = ;
     var fullContainer = $("#fullPageContainer");
     var mainModalDiv = $("<div>").attr({ "id": "mainModalDiv", "class": "row" });
 
@@ -26,134 +21,54 @@ $(document).ready(function () {
 
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
+
+        //These are variables that exist within the click event and are used in API search function which is a series of if statements checking for the search criteria of the user.  
+        //Then based on criteria it runs the proper function to perform the proper search in the right API. 
         var dropDownValue = $(".select-dropdown").val();
         var userSearchValue = $("#userSearch").val();
         var bookCheckedBool = $("#book-op")[0].checked;
         var movieCheckedBool = $("#movie-op")[0].checked;
         var gameCheckedBool = $("#game-op")[0].checked;
-        // console.log(event);
+
         //the below if statement is looking for a click on the submit buttom and if the dropdown menu option "Keyword is selected" 
         if (event.target.id === "userSearchButton") {
 
             // event.preventDefault();
 
-
+            //This function checks the users designated search criteria
             userAPISearch(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool);
             saveUserInput(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool);
 
-            //this if statement is run when none of the checkboxes are checked.  The code inside generates a modal to the html and then opens it.
-            // if ($("#game-op")[0].checked === false && $("#book-op")[0].checked === false && $("#movie-op")[0].checked === false) {
-
-            //     var modalDiv = $("<div>").attr({ "class": "modal", "id": "checkboxModal" });
-            //     var modalContentDiv = $("<div>").attr("class", "modal-content");
-            //     var modalFooter = $("<div>").attr("class", "modal-footer");
-
-            //     modalContentDiv.append($("<h4>").text("Notification: Please read "));
-            //     modalContentDiv.append($("<p>").text("Checkbox not clicked.  Please check at least one."))
-
-            //     modalFooter.append($("<a>").attr({ "href": "#!", "class": "modal-close waves-effect waves-green btn-flat" }).text("Close"));
-
-            //     modalDiv.append(modalContentDiv);
-            //     modalDiv.append(modalFooter);
-
-            //     $("#mainModalDiv").append(modalDiv);
-
-            //     //this line of code is important to initialize the modal before triggering it in the code to open
-            //     $('.modal').modal();
-
-            //     //this line of code grabs the modal div and opens it
-            //     $("#checkboxModal").modal('open');
-            // }
-            // //this if statement runs the code within when keyword is selected in the dropdown
-            // if ($(".select-dropdown").val() === "Keyword") {
-
-            //     //this if statement is looking for the book checkbox to be checked
-            //     if ($("#book-op")[0].checked === true) {
-
-            //         googleBooksKeywordQuery($("#userSearch").val(), googleBooksApiKey);
-            //     }
-            //     //this if statement is looking for the movie checkbox to be checked
-            //     if ($("#movie-op")[0].checked === true) {
-
-            //         OMDBKeywordQuery($("#userSearch").val(), OMDBApiKey);
-            //     }
-            //     //this if statement is looking for the game checkbox to be checked
-            //     if ($("#game-op")[0].checked === true) {
-
-            //         rawgKeywordQuery($("#userSearch").val());
-            //     }
-
-            //     saveUserInput($("#userSearch").val(), $(".select-dropdown").val(), $("#book-op")[0].checked, $("#movie-op")[0].checked, $("#game-op")[0].checked);
-
-            //     //this if statement runs the code within if Title is selected in the dropdown menu
-            // } else if ($(".select-dropdown").val() === "Title") {
-
-            //     if ($("#movie-op")[0].checked === true) {
-
-            //         OMDBTitleQuery($("#userSearch").val(), OMDBApiKey);
-            //     }
-
-            //     if ($("#book-op")[0].checked === true) {
-
-            //         googleBooksTitleQuery($("#userSearch").val(), googleBooksApiKey);
-            //     }
-
-            //     if ($("#game-op")[0].checked === true) {
-
-            //         rawgTitleQuery($("#userSearch").val());
-            //     }
-
-            //     saveUserInput($("#userSearch").val(), $(".select-dropdown").val(), $("#book-op")[0].checked, $("#movie-op")[0].checked, $("#game-op")[0].checked);
-
-            //     //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu. The code withing renders a modal to the html and opens it.
-            // } else {
-            //     var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
-            //     var modalContentDiv = $("<div>").attr("class", "modal-content");
-            //     var modalFooter = $("<div>").attr("class", "modal-footer");
-
-            //     modalContentDiv.append($("<h4>").text("Notification: Please read "));
-            //     modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
-
-            //     modalFooter.append($("<a>").attr({ "href": "#!", "class": "modal-close waves-effect waves-green btn-flat" }).text("Close"));
-
-            //     modalDiv.append(modalContentDiv);
-            //     modalDiv.append(modalFooter);
-
-            //     $("#mainModalDiv").append(modalDiv);
-
-            //     //this line of code is important to initialize the modal before triggering it in the code to open
-            //     $('.modal').modal();
-            //     //this line of code grabs the modal div and opens it
-            //     $("#dropdownModal").modal('open');
-            // }
-        }
+        };
 
         //the below if statement is looking for a click on the class userSearchListButton.  Essentially looking for the buttons user search list
         if (event.target.className.includes("userSearchListButton") === true) {
-            var keynameValue = event.target.innerHTML.split(":", 1);
-            console.log(typeof keynameValue);
+            //This variable grabs the userSearch button text and splits its contents into an array of three elements
+            var keynameValue = event.target.innerHTML.split(":", 3);
 
+            //this code runs a function for each index of userSearch Object.  It is looking for the searchText key value that matches the keynameValue variable.
+            //When it finds that key: value pair it uses the content in the object to run a user API search  
             $.each(userSearchObject, function (index) {
-                console.log(typeof userSearchObject[index].searchText);
-                if (userSearchObject[index].searchText == keynameValue && userSearchObject[index] !== null) {
+                //if statement checking for userSearchObjects key:value pairs that match the keynameValue variables based on the keyname variable array elements.  If it mat
+                if (userSearchObject[index].searchText == keynameValue[0] && userSearchObject[index].DropDownChoice == keynameValue[1].trim() && keynameValue[2].includes("book") === userSearchObject[index].books && keynameValue[2].includes("movie") === userSearchObject[index].movies && keynameValue[2].includes("game") === userSearchObject[index].games) {
 
+                    //calls the userAPI search function
                     userAPISearch(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
-                    // userSearchObject[index].DropDownChoice
-                    // userSearchObject[index].books
-                    // userSearchObject[index].movies
-                    // userSearchObject[index].games
-                }
+                   
+                };
             });
         };
-
+        //this if statment checks the click event for the close "X" button
         if (event.target.textContent === "X") {
 
             var keynameSearchListButton = event.target.parentElement.children[0].innerHTML.split(":", 1)
 
+            //This code runs a function for each index of userSearchObject.  It is looking for the searchText key value that matches the keynameSearchListButton variable.
             $.each(userSearchObject, function (index) {
+
                 if (userSearchObject[index].searchText == keynameSearchListButton) {
-                    //removes the city content from global JSON object searchedCityNames
-                    delete userSearchObject.splice(index, 1);
+                    //removes the element associated with searchTExt that matches the keynameSearchListButton variable
+                    userSearchObject.splice(index, 1);
                     //Removes the li div that is associated with the "X" button from the search button list
                     event.toElement.closest("li").remove();
                     //takes the searchedCityNames that has had the city removed from it and sets it to local storage
@@ -162,7 +77,6 @@ $(document).ready(function () {
             });
         }
     });
-
 
 
     //___________________________________________________________________________________
@@ -174,23 +88,26 @@ $(document).ready(function () {
         //This line grabs the data from localStorage, parses it, and sets it as variable storedCities
         var storedUserSearchData = JSON.parse(localStorage.getItem("userSearchObject"));
 
-        // If events weren't retrieved from localStorage, set the storedCities equal to searchedCityNames.
+    //______Jquery for Materialize__________
+        $("select").formSelect();
+
+        $('.parallax').parallax();
+
+        $('.collapsible').collapsible();
+    //_____________________________________
+
+        // If events weren't retrieved from localStorage, set the storedUserSearchData equal to userSearchObject.
         if (storedUserSearchData !== null) {
-
+            
             userSearchObject = storedUserSearchData;
-
+            //run a function for each index of userSearchObject that calls the renderSearchButtons function and makes a button based on search criteria.
             $.each(userSearchObject, function (index) {
                 renderSearchButtons(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
             });
-
         }
+    }; 
 
-
-
-    }; // //this code executes renderSearchButtons function for each index value of storedCities object
-    // $.each(storedUserSearchData, function (value) {
-
-
+    //This function is a generalized function that performs all the API searchs based on the given user search critieria.  This function is called in multiple click events
     function userAPISearch(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool) {
         //This line of code is necessary because if a user triggers both modals then a hidden style is automatically added to it and it will conflict with function of the site
         $("body").removeAttr("style");
@@ -290,15 +207,13 @@ $(document).ready(function () {
 
     };
 
-
-
     //This function saves the user search data criteria to userSearchObject which is then saved to localStorage.
     function saveUserInput(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck) {
-        console.log(userSearchObject);
+        //Grab the current userSearchObject array and push the new user input into it
         userSearchObject.push({ "searchText": userSearchValue, "DropDownChoice": dropDownOption, "books": bookCheck, "movies": movieCheck, "games": gameCheck });
-        console.log(userSearchObject);
+        //Save the userSearchObject array with new search criteria in it to localStorage
         localStorage.setItem("userSearchObject", JSON.stringify(userSearchObject));
-
+        //call the renderSearchButtons function and create a button for the search
         renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck);
     };
 
@@ -312,31 +227,22 @@ $(document).ready(function () {
         var movieText = "";
         var gameText = "";
 
-        
-            if (bookCheck === true) {
-                bookText = "book";
-            }
-            if (movieCheck === true) {
-                movieText = "movie";
-            }
-            if (gameCheck === true) {
-                gameText = "game";
-            }
+        //Below if statements are used to control what is entered in text in the button
+        if (bookCheck === true) {
+            bookText = "book";
+        }
+        if (movieCheck === true) {
+            movieText = "movie";
+        }
+        if (gameCheck === true) {
+            gameText = "game";
+        }
 
-            closeButton.text("X");
-            userSearch.text(userSearchValue + ": " + dropDownOption + ": " + bookText + " " + movieText + " " + gameText);
-            userSearchList.append($("<li>").append(userSearch, closeButton));
-            $("#searchDiv").append(userSearchList);
-
-
-        //this code takes the button created in variable above and puts city Name as text within that button.
-        //then that button is added as a list item to userSearchList unordered list tag. 
-        // console.log(buttonTextContent.keyname.titanic);
-
-
-        // console.log(Object.values(buttonTextContent.keyname));
+        closeButton.text("X");
+        userSearch.text(userSearchValue + ": " + dropDownOption + ": " + bookText + " " + movieText + " " + gameText);
+        userSearchList.append($("<li>").append(userSearch, closeButton));
+        $("#searchDiv").append(userSearchList);
     }
-
 
     //This function sets the query url for searching by title and then calls the googelbooksQuery function
     function googleBooksTitleQuery(searchCriteria, apiKey) {
@@ -367,18 +273,17 @@ $(document).ready(function () {
         // inauthor: Returns results where the text following this keyword is found in the author.
         // inpublisher: Returns results where the text following this keyword is found in the publisher.
         // subject: Returns results where the text following this keyword is listed in the category list of the volume.
-
-        var titleSearch = "intitle";
-        var authorSearch = "inauthor";
-        var subjectSearch = "subject";
-        var printType = "books";
+        // var titleSearch = "intitle";
+        // var authorSearch = "inauthor";
+        // var subjectSearch = "subject";
+        // var printType = "books";
 
         //this code performs a get ajax query to the google books api with the url for the api call as the parameter
         $.ajax({
             url: googleBooksURL,
             method: "GET"
         }).then(function (respGoogleBooks) {
-            console.log(respGoogleBooks);
+
 
             var countRowDiv1 = 0;
             var rowDiv1 = $("<div>").attr("class", "row");
@@ -391,14 +296,7 @@ $(document).ready(function () {
             //This line is starting and a function that will run for each element of the googlebooks response object delivered by api
             $.each(respGoogleBooks.items, function (index) {
 
-                console.log(respGoogleBooks.items[index].volumeInfo.title);
-                console.log(respGoogleBooks.items[index].volumeInfo.authors);
-                // console.log(respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail);
-                console.log(respGoogleBooks.items[index].volumeInfo.subtitle);
-                console.log(respGoogleBooks.items[index].volumeInfo.publishedDate);
-                console.log(respGoogleBooks.items[index].volumeInfo.buylink);
-
-                //The below if staement, else statement and code within's purpose is to render only four objects with col classes into a div with class row.  Once four have been rendered a new row div is created.
+                //The below if statement, else statement and code within's purpose is to render only four objects with col classes into a div with class row.  Once four have been rendered a new row div is created.
                 //this if statement runs the code within for the first four indexes (indexes: 0,1,2,3) of the response object.
                 if (countRowDiv1 < 4) {
 
@@ -443,8 +341,6 @@ $(document).ready(function () {
             url: titleURL,
             method: "GET"
         }).then(function (response) {
-
-            console.log(response);
 
             if (response.Error === "Movie not found!") {
                 noResultsFound($("#movieContent"));
@@ -492,28 +388,27 @@ $(document).ready(function () {
 
         var keywordURL = "https://www.omdbapi.com/?s=" + keyword + "&apikey=" + apiKey;
 
+        //This code performs the ajax query call based on the URL and returns response object respKeywordMovie
         $.ajax({
             url: keywordURL,
             method: "GET"
         }).then(function (respKeywordMovie) {
-            console.log(respKeywordMovie);
 
             var countRowDiv3 = 0;
             var rowDiv3 = $("<div>").attr("class", "row");
 
+            //if the object returns an error call noResultsFound function
             if (respKeywordMovie.Error === "Movie not found!") {
                 noResultsFound($("#movieContent"));
             }
 
+            //execite a function for each index of respKeywordMovie.Search object
             $.each(respKeywordMovie.Search, function (index) {
 
-                console.log(respKeywordMovie.Search[index].Title);
-                console.log(respKeywordMovie.Search[index].Type);
-                console.log(respKeywordMovie.Search[index].Year);
-                console.log(respKeywordMovie.Search[index].Poster);
-
+                //The below if statement, else statement and code within's purpose is to render only four objects with col classes into a div with class row.  Once four have been rendered a new row div is created.
+                //this if statement runs the code within for the first four indexes (indexes: 0,1,2,3) of the response object.
                 if (countRowDiv3 < 3) {
-                    console.log(countRowDiv3);
+
                     var colDiv3 = $("<div>").attr("class", "col s12 m6 l4");
 
                     rowDiv3.append(colDiv3.append($("<p>").text("Title: " + respKeywordMovie.Search[index].Title)));
@@ -522,7 +417,7 @@ $(document).ready(function () {
                     rowDiv3.append(colDiv3.append($("<img>").attr({ "src": respKeywordMovie.Search[index].Poster, "alt": "Movie Poster" })));
 
                     countRowDiv3++;
-
+                //This else runs once the countRowDiv variable hits four. 
                 } else {
 
                     $("#movieContent").append(rowDiv3);
@@ -530,7 +425,7 @@ $(document).ready(function () {
                     countRowDiv3 = 0;
 
                 }
-                //This line of code is necessary to render the rowDiv3 if the number of indexes in the response object is not evenly divided by 3
+                 //This line of code exists here because if the response object returns a number of results that is not divisible by 4 a row is never completely filled and doesn't get appended to bookcontent div by else statment.
                 $("#movieContent").append(rowDiv3);
 
             })
@@ -558,6 +453,7 @@ $(document).ready(function () {
             var rowDiv2 = $("<div>").attr("class", "row");
             var divDontWant = $("<div>")
 
+            //This if statement calls the noREsultsFound function if the Api brings back no results
             if (respRawg.count === 0) {
                 noResultsFound($("#gameContent"));
             }
@@ -622,6 +518,7 @@ $(document).ready(function () {
             var rowDiv2 = $("<div>").attr("class", "row");
             var divDontWant = $("<div>")
 
+            //This if statement calls the noREsultsFound function if the Api brings back no results
             if (respRawg.count === 0) {
                 noResultsFound($("#gameContent"));
             }
@@ -659,10 +556,8 @@ $(document).ready(function () {
                     countRowDiv2 = 0;
                 }
 
-                console.log(divDontWant);
                 $("#gameContent").append(rowDiv2);
                 divDontWant.empty();
-                console.log(divDontWant);
             });
         });
     }
@@ -690,7 +585,7 @@ $(document).ready(function () {
 
     }
 
-
+    //This function grabs an array appends each element to a list item.  Appends that to a list. Puts the list in a column.  And then the column in a  specified div.
     function genAuthorList(mainDiv, column, listDiv, respObject) {
         //function that runs for every index of the genre array to grab the name and place it into an li item.
         $.each(respObject.authors, function (index) {
@@ -737,58 +632,6 @@ $(document).ready(function () {
     }
 
 });
-//This function has not been written yet.
-function lowercaseWords() { }
 
 
 
-
-//old code being saved
-//
-//
-//
-//-----------------------------------
-
-// // click event for the user search button 
-// $(".container").on("keyup", function (event) {
-
-//     // $("#userSearch").preventDefault();
-//     if (event.key === "enter") {
-
-//         console.log(event);
-//         console.log(event.target.value);
-
-//     }
-
-// });
-// if event.key === "enter"
-// var userSearch = $("#userSearch").val()
-// 
-
-// if ( e.keycode === 13) {
-
-
-// });
-
-// $(".movie-input").on("click", function(event) {
-
-// event.preventDefault();
-
-
-// })
-
-//---------------------------------------    
-//The Movie DB
-
-// var movieDBKey = "a5b6a31636acf8a8c3c75e4575e245dd";
-// var queryMovieDB = "https://api.themoviedb.org/3/search/movie?api_key=" + movieDBKey + "&query=" + booktitle;
-
-// $.ajax({
-//     url: queryMovieDB,
-//     method: "GET"
-// }).then(function (respMovieDB) {
-//     console.log(respMovieDB);
-
-// })
-
-//-------------------------------------
