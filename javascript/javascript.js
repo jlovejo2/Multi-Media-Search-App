@@ -224,7 +224,7 @@ $(document).ready(function () {
     function renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck) {
 
         var userSearch = $("<button>").addClass("userSearchListButton btn");
-        var closeButton = $("<button>").addClass("btn waves-effect");
+        var closeButton = $("<button>").addClass("btn-small waves-effect");
         var userSearchList = $("<ul>").addClass("searchList");
         var bookText = "";
         var movieText = "";
