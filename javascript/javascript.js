@@ -1,4 +1,4 @@
-
+var userSearchObject = [];
 
 $(document).ready(function () {
 
@@ -19,25 +19,13 @@ $(document).ready(function () {
     // var rawgApiKey = ;
     var fullContainer = $("#fullPageContainer");
     var mainModalDiv = $("<div>").attr({ "id": "mainModalDiv", "class": "row" });
-    var userSearchObject = [];
-    
 
     fullContainer.append(mainModalDiv);
     
-
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
 
-    
-
-        //search criteria investigation
-        // console.log($("body"))
-        // console.log(event);
-        // console.log($("#book-op")[0].checked);
-        // console.log($(".select-dropdown").val());
-        // console.log($("#userSearch").val());
-
-        //the below if statement is looking for a click on the submit buttom and if the dropdown menu option "Keyword is selected" 
+         //the below if statement is looking for a click on the submit buttom and if the dropdown menu option "Keyword is selected" 
         if (event.target.id === "userSearchButton") {
 
             // event.preventDefault();
@@ -150,12 +138,16 @@ function init() {
 
     // If events weren't retrieved from localStorage, set the storedCities equal to searchedCityNames.
     if (storedUserSearchData !== null) {
+        
         userSearchObject = storedUserSearchData;
+
+        $.each (userSearchObject, function(index){
+            renderSearchButtons(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
+        });
+
     }
 
-    $.each (userSearchObject, function(index){
-        renderSearchButtons(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
-    });
+    
     
 }; // //this code executes renderSearchButtons function for each index value of storedCities object
     // $.each(storedUserSearchData, function (value) {
@@ -166,9 +158,9 @@ function init() {
 
 //This function saves the user search data criteria to userSearchObject which is then saved to localStorage.
 function saveUserInput( userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck) {
-    
+    console.log(userSearchObject);
     userSearchObject.push({ "searchText": userSearchValue, "DropDownChoice": dropDownOption, "books": bookCheck, "movies": movieCheck, "games": gameCheck });
-    
+    console.log(userSearchObject);
     localStorage.setItem("userSearchObject", JSON.stringify(userSearchObject));
 
     renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck);
@@ -195,7 +187,7 @@ function renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCh
         }
 
         closeButton.text("X");
-        userSearch.text(userSearchValue + " : " + dropDownOption + " " + bookText + " " + movieText + " " + gameText );
+        userSearch.text(userSearchValue + " : " + dropDownOption + " : " + bookText + " " + movieText + " " + gameText );
         userSearchList.append($("<li>").append(userSearch, closeButton));
         $("#searchDiv").append(userSearchList);
 
