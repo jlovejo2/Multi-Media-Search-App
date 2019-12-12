@@ -36,7 +36,7 @@ $(document).ready(function () {
         if (event.target.id === "userSearchButton") {
 
             // event.preventDefault();
-           
+
 
             userAPISearch(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool);
             saveUserInput(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool);
@@ -135,9 +135,9 @@ $(document).ready(function () {
 
             $.each(userSearchObject, function (index) {
                 console.log(typeof userSearchObject[index].searchText);
-                if (userSearchObject[index].searchText == keynameValue) {
+                if (userSearchObject[index].searchText == keynameValue && userSearchObject[index] !== null) {
 
-                    userAPISearch(userSearchObject[index].searchText,userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
+                    userAPISearch(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
                     // userSearchObject[index].DropDownChoice
                     // userSearchObject[index].books
                     // userSearchObject[index].movies
@@ -145,6 +145,22 @@ $(document).ready(function () {
                 }
             });
         };
+
+        if (event.target.textContent === "X") {
+
+            var keynameSearchListButton = event.target.parentElement.children[0].innerHTML.split(":", 1)
+
+            $.each(userSearchObject, function (index) {
+                if (userSearchObject[index].searchText == keynameSearchListButton) {
+                    //removes the city content from global JSON object searchedCityNames
+                    delete userSearchObject.splice(index, 1);
+                    //Removes the li div that is associated with the "X" button from the search button list
+                    event.toElement.closest("li").remove();
+                    //takes the searchedCityNames that has had the city removed from it and sets it to local storage
+                    localStorage.setItem("userSearchObject", JSON.stringify(userSearchObject));
+                }
+            });
+        }
     });
 
 
@@ -176,17 +192,17 @@ $(document).ready(function () {
 
 
     function userAPISearch(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool) {
-         //This line of code is necessary because if a user triggers both modals then a hidden style is automatically added to it and it will conflict with function of the site
-         $("body").removeAttr("style");
+        //This line of code is necessary because if a user triggers both modals then a hidden style is automatically added to it and it will conflict with function of the site
+        $("body").removeAttr("style");
 
-         //These lines of code clear the page of previously rendered content when search button is clicked.
-         $("#mainModalDiv").empty();
-         $("#movieContent").empty();
-         $("#movieContent").removeAttr("style");
-         $("#gameContent").empty();
-         $("#gameContent").removeAttr("style");
-         $("#bookContent").empty();
-         $("#bookContent").removeAttr("style");
+        //These lines of code clear the page of previously rendered content when search button is clicked.
+        $("#mainModalDiv").empty();
+        $("#movieContent").empty();
+        $("#movieContent").removeAttr("style");
+        $("#gameContent").empty();
+        $("#gameContent").removeAttr("style");
+        $("#bookContent").empty();
+        $("#bookContent").removeAttr("style");
 
         //this if statement runs the code within when keyword is selected in the dropdown
         if (gameCheckedBool === false && bookCheckedBool === false && movieCheckedBool === false) {
@@ -296,20 +312,22 @@ $(document).ready(function () {
         var movieText = "";
         var gameText = "";
 
-        if (bookCheck === true) {
-            bookText = "book";
-        }
-        if (movieCheck === true) {
-            movieText = "movie";
-        }
-        if (gameCheck === true) {
-            gameText = "game";
-        }
+        
+            if (bookCheck === true) {
+                bookText = "book";
+            }
+            if (movieCheck === true) {
+                movieText = "movie";
+            }
+            if (gameCheck === true) {
+                gameText = "game";
+            }
 
-        closeButton.text("X");
-        userSearch.text(userSearchValue + ": " + dropDownOption + ": " + bookText + " " + movieText + " " + gameText);
-        userSearchList.append($("<li>").append(userSearch, closeButton));
-        $("#searchDiv").append(userSearchList);
+            closeButton.text("X");
+            userSearch.text(userSearchValue + ": " + dropDownOption + ": " + bookText + " " + movieText + " " + gameText);
+            userSearchList.append($("<li>").append(userSearch, closeButton));
+            $("#searchDiv").append(userSearchList);
+
 
         //this code takes the button created in variable above and puts city Name as text within that button.
         //then that button is added as a list item to userSearchList unordered list tag. 
