@@ -2,6 +2,10 @@ body html {
     height: 100%;
 }
 
+body {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 .heading {
     height: 10% !important;
 }
@@ -17,4 +21,8 @@ img {
 .searchList {
     /* display: inline; */
     margin-top: 1px;
+}
+
+#copyright {
+    padding-bottom: 30px;
 }

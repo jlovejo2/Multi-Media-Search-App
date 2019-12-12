@@ -7,9 +7,15 @@ $(document).ready(function () {
     //Also contains code for rendering search buttons from localStorage object
     init();
 
-    //_______________________________________________________
-    //      Add materialize code above this line
+    //______________________________________________________
+    //_______Add Materialize Code above this lie____________
     //______(Materialize Code added to init function)________
+
+    //this code below keeps more than one collapsible div open at a time
+    var elem = document.querySelector('.collapsible.expandable');
+    var instance = M.Collapsible.init(elem, {
+        accordion: false
+    });
 
     var googleBooksApiKey = "AIzaSyCV2NuETPfhp3RfGB5gwxvt7qbXW8EMPfQ";
     var OMDBApiKey = "trilogy";
@@ -54,7 +60,7 @@ $(document).ready(function () {
 
                     //calls the userAPI search function
                     userAPISearch(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
-                   
+
                 };
             });
         };
@@ -88,24 +94,24 @@ $(document).ready(function () {
         //This line grabs the data from localStorage, parses it, and sets it as variable storedCities
         var storedUserSearchData = JSON.parse(localStorage.getItem("userSearchObject"));
 
-    //______Jquery for Materialize__________
+        //______Jquery for Materialize__________
         $("select").formSelect();
 
         $('.parallax').parallax();
 
         $('.collapsible').collapsible();
-    //_____________________________________
+        //_____________________________________
 
         // If events weren't retrieved from localStorage, set the storedUserSearchData equal to userSearchObject.
         if (storedUserSearchData !== null) {
-            
+
             userSearchObject = storedUserSearchData;
             //run a function for each index of userSearchObject that calls the renderSearchButtons function and makes a button based on search criteria.
             $.each(userSearchObject, function (index) {
                 renderSearchButtons(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
             });
         }
-    }; 
+    };
 
     //This function is a generalized function that performs all the API searchs based on the given user search critieria.  This function is called in multiple click events
     function userAPISearch(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool) {
@@ -161,7 +167,6 @@ $(document).ready(function () {
 
                 rawgKeywordQuery(userSearchValue);
             }
-
             // saveUserInput(userSearchValue, dropDownValue, bookCheckedBool, movieCheckedBool, gameCheckedBool);
 
             //this if statement runs the code within if Title is selected in the dropdown menu
@@ -173,7 +178,6 @@ $(document).ready(function () {
             }
 
             if (bookCheckedBool === true) {
-
                 googleBooksTitleQuery(userSearchValue, googleBooksApiKey);
             }
 
@@ -193,7 +197,6 @@ $(document).ready(function () {
             modalContentDiv.append($("<p>").text("Must choose a search criteria option in pulldown menu."))
 
             modalFooter.append($("<a>").attr({ "href": "#!", "class": "modal-close waves-effect waves-green btn-flat" }).text("Close"));
-
             modalDiv.append(modalContentDiv);
             modalDiv.append(modalFooter);
 
@@ -257,6 +260,7 @@ $(document).ready(function () {
     //This function sets the query url for searching by keyword and then calls the googelbooksQuery function
     function googleBooksKeywordQuery(searchCriteria, apiKey) {
 
+
         var keywordURL = "https://www.googleapis.com/books/v1/volumes?q=" + searchCriteria + "&printType=books&orderBy=relevance&key=" + apiKey;
 
         googleBooksQuery(keywordURL);
@@ -284,9 +288,14 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (respGoogleBooks) {
 
-
             var countRowDiv1 = 0;
             var rowDiv1 = $("<div>").attr("class", "row");
+
+            //this opens the collapsible div when the results are rendered
+            instance.open(1);
+
+            //badge count
+            $("#BookCount").text(respGoogleBooks.items.length);
 
             //this if statement runs the code when there are no items delivered by the api
             if (respGoogleBooks.totalItems === 0) {
@@ -309,8 +318,10 @@ $(document).ready(function () {
                     rowDiv1.append(colDiv1.append($("<p>").attr("class", "flow-text").text(respGoogleBooks.items[index].volumeInfo.subtitle)));
                     //line of code creates a p tag, adds designated classes, and adds the published date of book into it
                     rowDiv1.append(colDiv1.append($("<p>").attr("class", "flow-text").text("Published Date: " + respGoogleBooks.items[index].volumeInfo.publishedDate)));
-                    //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
-                    rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                    if (respGoogleBooks.items[index].volumeInfo.imageLinks) {
+                        //line of code that creates creates the img tag, adds the image to it, and places it into the proper div
+                        rowDiv1.append(colDiv1.append($("<img>").attr({ "class": "responsive-img", "src": respGoogleBooks.items[index].volumeInfo.imageLinks.thumbnail, "alt": "Image" })));
+                    }
                     // genTitleImgFromQuery(rowDiv1, colDiv1, respGoogleBooks.items[index].volumeInfo.title, bookImg);
                     genAuthorList(rowDiv1, colDiv1, authorList, respGoogleBooks.items[index].volumeInfo);
 
@@ -342,6 +353,9 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
 
+            //this opens the collapsible div when the results are rendered
+            instance.open(0);
+
             if (response.Error === "Movie not found!") {
                 noResultsFound($("#movieContent"));
             } else {
@@ -350,11 +364,9 @@ $(document).ready(function () {
                 movieMain.addClass("movie");
 
                 //poster 
-
                 var imgUrl = response.Poster;
                 var image = $("<img>").attr("src", imgUrl);
                 movieMain.append(image);
-
 
                 //rating
                 var rating = response.Rated;
@@ -377,6 +389,8 @@ $(document).ready(function () {
 
                 $("#movieContent").append(movieMain);
 
+                //badge count
+                $("#MovieCount").text(1);
             }
 
         });
@@ -402,6 +416,12 @@ $(document).ready(function () {
                 noResultsFound($("#movieContent"));
             }
 
+            //this opens the collapsible div when the results are rendered
+            instance.open(0);
+
+            //badge count
+            $("#MovieCount").text(respKeywordMovie.Search.length)
+
             //execite a function for each index of respKeywordMovie.Search object
             $.each(respKeywordMovie.Search, function (index) {
 
@@ -417,7 +437,7 @@ $(document).ready(function () {
                     rowDiv3.append(colDiv3.append($("<img>").attr({ "src": respKeywordMovie.Search[index].Poster, "alt": "Movie Poster" })));
 
                     countRowDiv3++;
-                //This else runs once the countRowDiv variable hits four. 
+                    //This else runs once the countRowDiv variable hits four. 
                 } else {
 
                     $("#movieContent").append(rowDiv3);
@@ -425,7 +445,7 @@ $(document).ready(function () {
                     countRowDiv3 = 0;
 
                 }
-                 //This line of code exists here because if the response object returns a number of results that is not divisible by 4 a row is never completely filled and doesn't get appended to bookcontent div by else statment.
+                //This line of code exists here because if the response object returns a number of results that is not divisible by 4 a row is never completely filled and doesn't get appended to bookcontent div by else statment.
                 $("#movieContent").append(rowDiv3);
 
             })
@@ -457,6 +477,11 @@ $(document).ready(function () {
             if (respRawg.count === 0) {
                 noResultsFound($("#gameContent"));
             }
+
+            //badge on game div
+            $("#GameCount").text(respRawg.count)
+
+            instance.open(2);
 
             //each function that runs for every index of the resp object returned by the ajax call to Rawg api
             $.each(respRawg.results, function (index) {
@@ -583,6 +608,7 @@ $(document).ready(function () {
 
         });
 
+
     }
 
     //This function grabs an array appends each element to a list item.  Appends that to a list. Puts the list in a column.  And then the column in a  specified div.
@@ -609,7 +635,6 @@ $(document).ready(function () {
     //to see if it is included in the title
     function CapitalizeWords(string) {
 
-        // var numOfSpaces = 5;
         var wordsArray = string.split(" ");
 
         var capitalizedString = "";
