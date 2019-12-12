@@ -335,7 +335,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
         }
         //this opens the collapsible div when the results are rendered
         instance.open(0);
-
+        $("#MovieCount").text(respKeywordMovie.Search.length)
 
         $.each(respKeywordMovie.Search, function (index) {
 
@@ -360,6 +360,7 @@ function OMDBKeywordQuery(keyword, apiKey) {
                 $("#movieContent").append(rowDiv3);
                 rowDiv3 = $("<div>").attr("class", "row");
                 countRowDiv3 = 0;
+
 
             }
             //This line of code is necessary to render the rowDiv3 if the number of indexes in the response object is not evenly divided by 3
