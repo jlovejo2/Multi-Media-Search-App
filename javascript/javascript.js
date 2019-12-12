@@ -20,10 +20,10 @@ $(document).ready(function () {
     var fullContainer = $("#fullPageContainer");
     var mainModalDiv = $("<div>").attr({ "id": "mainModalDiv", "class": "row" });
     var userSearchObject = [];
-    var userSearchList = $("<ul>").addClass("searchList");
+    
 
     fullContainer.append(mainModalDiv);
-    $("#searchDiv").append(userSearchList);
+    
 
     //click event on the entire container of the page
     fullContainer.on("click", function (event) {
@@ -96,7 +96,7 @@ $(document).ready(function () {
                     
                     rawgKeywordQuery($("#userSearch").val());
                 }
-                renderSearchButtons(userSearchObject);
+                
                 //this if statement runs the code within if Title is selected in the dropdown menu
             } else if ($(".select-dropdown").val() === "Title") {
 
@@ -114,7 +114,7 @@ $(document).ready(function () {
                     
                     rawgTitleQuery($("#userSearch").val());
                 }
-                renderSearchButtons(userSearchObject);
+                
              //Since the other two conditions in the pulldown menu are coded above this else refers to if nothing has been selected in the menu. The code withing renders a modal to the html and opens it.
             } else {
                 var modalDiv = $("<div>").attr({ "class": "modal", "id": "dropdownModal" });
@@ -152,11 +152,16 @@ function init() {
     if (storedUserSearchData !== null) {
         userSearchObject = storedUserSearchData;
     }
-   
+
+    $.each (userSearchObject, function(index){
+        renderSearchButtons(userSearchObject[index].searchText, userSearchObject[index].DropDownChoice, userSearchObject[index].books, userSearchObject[index].movies, userSearchObject[index].games);
+    });
+    
 }; // //this code executes renderSearchButtons function for each index value of storedCities object
     // $.each(storedUserSearchData, function (value) {
 
-    //     renderSearchButtons(value);
+    
+
     // });
 
 //This function saves the user search data criteria to userSearchObject which is then saved to localStorage.
@@ -165,33 +170,44 @@ function saveUserInput( userSearchValue, dropDownOption, bookCheck, movieCheck, 
     userSearchObject.push({ "searchText": userSearchValue, "DropDownChoice": dropDownOption, "books": bookCheck, "movies": movieCheck, "games": gameCheck });
     
     localStorage.setItem("userSearchObject", JSON.stringify(userSearchObject));
+
+    renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck);
 };
 
 //Function that renders the search buttons and close button list under the search bar
-function renderSearchButtons(buttonTextContent) {
+function renderSearchButtons(userSearchValue, dropDownOption, bookCheck, movieCheck, gameCheck ) {
 
     var userSearch = $("<button>").addClass("userSearchButton");
     var closeButton = $("<button>").addClass("btn waves-effect");
-    var kn = "searchText"; 
-    
-   for (i=0, i < buttonTextContent.length, i++ ) {
+    var userSearchList = $("<ul>").addClass("searchList");
+    var bookText = "";
+    var movieText = "";
+    var gameText = "";
 
-            if(buttonTextContent[key] === searchText){
+        if (bookCheck === true) {
+            bookText = "book";
+        } 
+        if (movieCheck === true) {
+            movieText = "movie";
+        }
+        if (gameCheck === true) {
+            gameText = "game";
+        }
 
-            }
-    }
-    });
+        closeButton.text("X");
+        userSearch.text(userSearchValue + " : " + dropDownOption + " " + bookText + " " + movieText + " " + gameText );
+        userSearchList.append($("<li>").append(userSearch, closeButton));
+        $("#searchDiv").append(userSearchList);
 
-    console.log(buttonTextContent[0].searchText);
     //this code takes the button created in variable above and puts city Name as text within that button.
     //then that button is added as a list item to userSearchList unordered list tag. 
     // console.log(buttonTextContent.keyname.titanic);
-    closeButton.text("X");
-    userSearch.text(searchString);
+    
+    
     // console.log(Object.values(buttonTextContent.keyname));
-    userSearchList.prepend($("<li>").prepend(userSearch, closeButton));
-};
+}
 
+    
 //This function sets the query url for searching by title and then calls the googelbooksQuery function
 function googleBooksTitleQuery(searchCriteria, apiKey) {
 
